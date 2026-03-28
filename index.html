@@ -9,7 +9,7 @@
       "url": "https://atalovesyou.github.io/invoicepilot/",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
-      "description": "AI invoicing for freelancers",
+      "description": "AI invoicing for freelancers — full invoice builder with editable fields, 3 templates, multi-currency, tax configuration, local storage history, and auto-chase emails",
       "offers": {
             "@type": "Offer",
             "price": "0",
@@ -20,18 +20,18 @@
             "name": "OpenSphere Labs",
             "url": "https://atalovesyou.github.io/opensphere-labs/"
       }
-}
+    }
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InvoicePilot — AI Invoicing for Freelancers</title>
-    <meta name="description" content="Describe your project → get a professional invoice in 30 seconds. Track payments, auto-chase late invoices, get paid faster. Free to start.">
+    <title>InvoicePilot — AI Invoicing for Freelancers | Full Invoice Builder</title>
+    <meta name="description" content="Create professional invoices in seconds. Full editable builder, 3 templates, multi-currency, auto tax calculation, PDF export, local storage history. Free to start.">
     <meta property="og:title" content="InvoicePilot — AI Invoicing for Freelancers">
-    <meta property="og:description" content="AI-powered invoicing. Describe your work → professional invoice in 30 seconds. Track payments. Auto-chase overdue clients. $0-9/mo.">
+    <meta property="og:description" content="Full invoice builder with editable fields, 3 templates, multi-currency, configurable tax, PDF export, and invoice history. $0 to start.">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="InvoicePilot — AI Invoicing for Freelancers">
-    <meta name="twitter:description" content="AI invoicing for freelancers. 30 seconds from description to professional invoice.">
+    <meta name="twitter:description" content="Full invoice builder. 3 templates. Multi-currency. PDF export. Free.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💸</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
@@ -45,17 +45,21 @@
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes pulse-green { 0%, 100% { box-shadow: 0 0 0 0 rgba(52,211,153,0.4); } 70% { box-shadow: 0 0 0 10px rgba(52,211,153,0); } }
         .pulse-green { animation: pulse-green 2s infinite; }
-        .status-paid { color: #34d399; }
-        .status-pending { color: #fbbf24; }
-        .status-overdue { color: #ef4444; }
-        .status-draft { color: #9ca3af; }
+        .editable-field { background: transparent; border: 1px dashed transparent; padding: 2px 4px; border-radius: 4px; transition: all 0.2s; }
+        .editable-field:hover { border-color: rgba(52,211,153,0.4); background: rgba(52,211,153,0.05); }
+        .editable-field:focus { border-color: #34d399; background: rgba(52,211,153,0.1); outline: none; }
+        .template-btn.active { border-color: #34d399; background: rgba(52,211,153,0.15); }
+        .tab-btn.active { background: rgba(52,211,153,0.15); color: #34d399; border-color: rgba(52,211,153,0.3); }
+        .inv-row:hover .row-delete { opacity: 1; }
+        .row-delete { opacity: 0; transition: opacity 0.2s; }
+        .status-badge { padding: 2px 10px; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; }
+        /* Template styles */
+        .tpl-minimal { background: #fff; color: #111; }
+        .tpl-blue { background: linear-gradient(135deg, #f0f4ff 0%, #fff 100%); color: #1e293b; }
+        .tpl-blue .inv-header { background: #1e3a5f; color: #fff; padding: 24px; border-radius: 12px 12px 0 0; }
+        .tpl-bold { background: #1a1a2e; color: #e2e8f0; }
+        .tpl-bold .inv-header { background: #16213e; color: #fff; padding: 24px; border-radius: 12px 12px 0 0; }
     </style>
-  <link rel="canonical" href="https://atalovesyou.github.io/invoicepilot/">
-  <meta property="og:image" content="https://atalovesyou.github.io/invoicepilot/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://atalovesyou.github.io/invoicepilot/og-image.png">
-  <meta property="og:url" content="https://atalovesyou.github.io/invoicepilot/">
 </head>
 <body class="bg-[#0a0a0f] text-gray-200 antialiased">
 
@@ -67,9 +71,9 @@
                 <span class="text-xl font-bold">Invoice<span class="text-emerald-400">Pilot</span></span>
             </div>
             <div class="hidden md:flex items-center gap-8 text-sm text-gray-400">
-                <a href="#demo" class="hover:text-white transition">Demo</a>
+                <a href="#builder" class="hover:text-white transition">Builder</a>
+                <a href="#history" class="hover:text-white transition">History</a>
                 <a href="#chase" class="hover:text-white transition">Auto-Chase</a>
-                <a href="#dashboard" class="hover:text-white transition">Dashboard</a>
                 <a href="#pricing" class="hover:text-white transition">Pricing</a>
             </div>
             <button onclick="document.getElementById('waitlist-section').scrollIntoView({behavior:'smooth'})" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
@@ -83,18 +87,18 @@
         <div class="max-w-4xl mx-auto text-center">
             <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-1.5 mb-6">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-green"></span>
-                <span class="text-emerald-400 text-sm font-medium">AI-Powered Invoicing</span>
+                <span class="text-emerald-400 text-sm font-medium">v2.0 — Full Invoice Builder • 3 Templates • Local Storage</span>
             </div>
             <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6">
-                Describe your work.<br>
+                Create invoices.<br>
                 <span class="gradient-text">Get paid faster.</span>
             </h1>
             <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
-                Type what you did → professional invoice in 30 seconds. Track payments. Auto-chase late clients. Never lose money to forgotten invoices again.
+                Full invoice builder with editable fields, 3 professional templates, multi-currency support, configurable tax, PDF export, and local history. No signup. No backend. Works offline.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#demo" class="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3.5 rounded-xl text-lg font-semibold transition glow">
-                    Try the Demo →
+                <a href="#builder" class="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3.5 rounded-xl text-lg font-semibold transition glow">
+                    Build an Invoice →
                 </a>
                 <a href="#pricing" class="glass hover:bg-white/5 text-white px-8 py-3.5 rounded-xl text-lg font-semibold transition">
                     See Pricing
@@ -111,16 +115,16 @@
                 <div class="text-sm text-gray-400 mt-1">Invoice Generation</div>
             </div>
             <div>
-                <div class="text-3xl font-bold text-white">3x</div>
-                <div class="text-sm text-gray-400 mt-1">Faster Payment</div>
+                <div class="text-3xl font-bold text-white">3</div>
+                <div class="text-sm text-gray-400 mt-1">Pro Templates</div>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-white">6</div>
+                <div class="text-sm text-gray-400 mt-1">Currencies</div>
             </div>
             <div>
                 <div class="text-3xl font-bold text-white">$0</div>
                 <div class="text-sm text-gray-400 mt-1">To Start</div>
-            </div>
-            <div>
-                <div class="text-3xl font-bold text-white">0%</div>
-                <div class="text-sm text-gray-400 mt-1">Transaction Fees</div>
             </div>
         </div>
     </section>
@@ -132,39 +136,41 @@
             <div class="grid md:grid-cols-3 gap-6">
                 <div class="glass rounded-2xl p-8 text-center">
                     <div class="text-4xl mb-4">⚡</div>
-                    <h3 class="text-xl font-bold mb-3 text-emerald-400">Generate</h3>
-                    <p class="text-gray-400">Describe your work in plain English. AI creates a professional invoice with line items, taxes, and payment terms.</p>
+                    <h3 class="text-xl font-bold mb-3 text-emerald-400">Build</h3>
+                    <p class="text-gray-400">Full editable invoice builder. Type a description OR fill in fields manually. Add/remove line items. 3 professional templates.</p>
                 </div>
                 <div class="glass rounded-2xl p-8 text-center">
                     <div class="text-4xl mb-4">📊</div>
                     <h3 class="text-xl font-bold mb-3 text-emerald-400">Track</h3>
-                    <p class="text-gray-400">See all invoices at a glance. Know who's paid, who's pending, and who's overdue — in real time.</p>
+                    <p class="text-gray-400">Local invoice history. See all invoices, their status, outstanding amounts. Edit or duplicate any saved invoice.</p>
                 </div>
                 <div class="glass rounded-2xl p-8 text-center">
                     <div class="text-4xl mb-4">🔔</div>
                     <h3 class="text-xl font-bold mb-3 text-emerald-400">Chase</h3>
-                    <p class="text-gray-400">Auto-generate follow-up emails that escalate from friendly to firm. Stop losing money to "I forgot" clients.</p>
+                    <p class="text-gray-400">Auto-generate personalized follow-up emails that escalate from friendly to firm. Copy and send in seconds.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Demo Section -->
-    <section id="demo" class="py-20 px-6 bg-white/[0.01]">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-4">Try it — describe your work</h2>
-            <p class="text-gray-400 text-center mb-10">Type a natural language description and watch AI generate a professional invoice</p>
+    <!-- ============ INVOICE BUILDER SECTION ============ -->
+    <section id="builder" class="py-20 px-6 bg-white/[0.01]">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-4">Invoice Builder</h2>
+            <p class="text-gray-400 text-center mb-8">Type a description for quick start, or build manually. Every field is editable.</p>
 
-            <div class="glass rounded-2xl p-8 glow">
-                <!-- Input -->
-                <div class="mb-6">
-                    <label class="text-sm text-gray-400 mb-2 block">Describe your work:</label>
-                    <textarea id="work-description" rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none transition resize-none"
-                        placeholder="e.g., I built a React landing page for TechStartup Inc. 25 hours at $120/hr. Also did logo design for $500 flat. Net-30 payment terms."></textarea>
-                </div>
+            <!-- Tabs: Quick Start vs Manual -->
+            <div class="flex justify-center gap-2 mb-8">
+                <button onclick="showBuilderTab('quick')" id="tab-quick" class="tab-btn active px-5 py-2 rounded-lg text-sm font-medium border border-white/10 transition">⚡ Quick Start (NLP)</button>
+                <button onclick="showBuilderTab('manual')" id="tab-manual" class="tab-btn px-5 py-2 rounded-lg text-sm font-medium border border-white/10 transition">✏️ Manual Builder</button>
+            </div>
 
-                <!-- Quick templates -->
-                <div class="flex flex-wrap gap-2 mb-6">
+            <!-- Quick Start Tab -->
+            <div id="panel-quick" class="glass rounded-2xl p-8 mb-8 glow">
+                <label class="text-sm text-gray-400 mb-2 block">Describe your work in plain English:</label>
+                <textarea id="work-description" rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none transition resize-none mb-4"
+                    placeholder="e.g., I built a React landing page for TechStartup Inc. 25 hours at $120/hr. Also did logo design for $500 flat. Net-30 payment terms."></textarea>
+                <div class="flex flex-wrap gap-2 mb-4">
                     <button onclick="useTemplate('webdev')" class="text-xs bg-white/5 hover:bg-white/10 border border-white/10 rounded-full px-3 py-1 transition">🖥️ Web Dev</button>
                     <button onclick="useTemplate('design')" class="text-xs bg-white/5 hover:bg-white/10 border border-white/10 rounded-full px-3 py-1 transition">🎨 Design</button>
                     <button onclick="useTemplate('writing')" class="text-xs bg-white/5 hover:bg-white/10 border border-white/10 rounded-full px-3 py-1 transition">✍️ Writing</button>
@@ -172,239 +178,342 @@
                     <button onclick="useTemplate('photo')" class="text-xs bg-white/5 hover:bg-white/10 border border-white/10 rounded-full px-3 py-1 transition">📸 Photography</button>
                     <button onclick="useTemplate('coaching')" class="text-xs bg-white/5 hover:bg-white/10 border border-white/10 rounded-full px-3 py-1 transition">🧠 Coaching</button>
                 </div>
-
-                <button onclick="generateInvoice()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-semibold transition">
-                    ⚡ Generate Invoice
+                <button onclick="generateFromNLP()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-semibold transition">
+                    ⚡ Generate Invoice from Description
                 </button>
+            </div>
 
-                <!-- Generated Invoice -->
-                <div id="invoice-output" class="hidden mt-8 fade-in">
-                    <div class="bg-white rounded-2xl p-8 text-gray-900" id="invoice-preview">
-                        <!-- Header -->
+            <!-- Manual Builder Tab (hidden by default) -->
+            <div id="panel-manual" class="hidden glass rounded-2xl p-8 mb-8 glow">
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <!-- From -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-3">From (Your Business)</h3>
+                        <input id="m-from-name" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm mb-2 focus:border-emerald-500 focus:outline-none" placeholder="Your Business Name" value="">
+                        <input id="m-from-email" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm mb-2 focus:border-emerald-500 focus:outline-none" placeholder="you@email.com" value="">
+                        <input id="m-from-address" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" placeholder="Address (optional)" value="">
+                    </div>
+                    <!-- To -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-3">Bill To (Client)</h3>
+                        <input id="m-client-name" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm mb-2 focus:border-emerald-500 focus:outline-none" placeholder="Client Name" value="">
+                        <input id="m-client-email" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm mb-2 focus:border-emerald-500 focus:outline-none" placeholder="client@company.com" value="">
+                        <input id="m-client-address" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" placeholder="Address (optional)" value="">
+                    </div>
+                </div>
+
+                <!-- Invoice Details Row -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div>
+                        <label class="text-xs text-gray-500 block mb-1">Invoice #</label>
+                        <input id="m-inv-number" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" value="">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-500 block mb-1">Date</label>
+                        <input id="m-inv-date" type="date" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-500 block mb-1">Payment Terms</label>
+                        <select id="m-terms" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none">
+                            <option value="0">Due on Receipt</option>
+                            <option value="7">Net 7</option>
+                            <option value="14">Net 14</option>
+                            <option value="15">Net 15</option>
+                            <option value="30" selected>Net 30</option>
+                            <option value="45">Net 45</option>
+                            <option value="60">Net 60</option>
+                            <option value="90">Net 90</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-500 block mb-1">Currency</label>
+                        <select id="m-currency" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" onchange="recalc()">
+                            <option value="USD">$ USD</option>
+                            <option value="CAD">$ CAD</option>
+                            <option value="EUR">€ EUR</option>
+                            <option value="GBP">£ GBP</option>
+                            <option value="AUD">$ AUD</option>
+                            <option value="INR">₹ INR</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tax & Discount Row -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div>
+                        <label class="text-xs text-gray-500 block mb-1">Tax Rate</label>
+                        <select id="m-tax-rate" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" onchange="handleTaxChange()">
+                            <option value="0">No Tax</option>
+                            <option value="5">5% GST</option>
+                            <option value="7">7% GST (SG)</option>
+                            <option value="10">10% GST (AU)</option>
+                            <option value="13" selected>13% HST (ON)</option>
+                            <option value="15">15% HST (NS/NB)</option>
+                            <option value="20">20% VAT (UK)</option>
+                            <option value="21">21% VAT (EU)</option>
+                            <option value="25">25% VAT (DK/SE)</option>
+                            <option value="custom">Custom...</option>
+                        </select>
+                    </div>
+                    <div id="custom-tax-wrap" class="hidden">
+                        <label class="text-xs text-gray-500 block mb-1">Custom Tax %</label>
+                        <input id="m-custom-tax" type="number" min="0" max="100" step="0.1" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" placeholder="e.g. 8.25" onchange="recalc()">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-500 block mb-1">Discount</label>
+                        <div class="flex gap-1">
+                            <input id="m-discount" type="number" min="0" step="0.01" class="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" placeholder="0" value="0" onchange="recalc()">
+                            <select id="m-discount-type" class="bg-white/5 border border-white/10 rounded-lg px-2 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" onchange="recalc()">
+                                <option value="percent">%</option>
+                                <option value="fixed">$</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-500 block mb-1">Notes</label>
+                        <input id="m-notes" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" placeholder="Thank you for your business!">
+                    </div>
+                </div>
+
+                <!-- Line Items -->
+                <h3 class="text-sm font-semibold text-emerald-400 uppercase tracking-wider mb-3">Line Items</h3>
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full min-w-[500px]">
+                        <thead>
+                            <tr class="border-b border-white/10">
+                                <th class="text-left text-xs text-gray-500 pb-2 w-2/5">Description</th>
+                                <th class="text-right text-xs text-gray-500 pb-2 w-1/6">Qty</th>
+                                <th class="text-center text-xs text-gray-500 pb-2 w-1/12">Unit</th>
+                                <th class="text-right text-xs text-gray-500 pb-2 w-1/6">Rate</th>
+                                <th class="text-right text-xs text-gray-500 pb-2 w-1/6">Amount</th>
+                                <th class="w-8"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="line-items">
+                            <!-- JS populates -->
+                        </tbody>
+                    </table>
+                </div>
+                <button onclick="addLineItem()" class="text-sm text-emerald-400 hover:text-emerald-300 transition mb-6">+ Add Line Item</button>
+
+                <!-- Totals Display -->
+                <div class="flex justify-end mb-6">
+                    <div class="w-72 glass rounded-xl p-4">
+                        <div class="flex justify-between py-1 text-sm"><span class="text-gray-400">Subtotal</span><span id="calc-subtotal" class="text-white font-medium">$0.00</span></div>
+                        <div id="calc-discount-row" class="hidden flex justify-between py-1 text-sm"><span class="text-gray-400">Discount</span><span id="calc-discount" class="text-red-400">-$0.00</span></div>
+                        <div class="flex justify-between py-1 text-sm"><span class="text-gray-400" id="calc-tax-label">Tax (13%)</span><span id="calc-tax" class="text-white">$0.00</span></div>
+                        <div class="flex justify-between py-2 border-t border-white/10 mt-2 font-bold text-lg"><span>Total</span><span id="calc-total" class="text-emerald-400">$0.00</span></div>
+                    </div>
+                </div>
+
+                <button onclick="generateFromManual()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-semibold transition">
+                    📄 Preview Invoice
+                </button>
+            </div>
+
+            <!-- Template Switcher -->
+            <div id="template-switcher" class="hidden flex justify-center gap-3 mb-6 fade-in">
+                <button onclick="setTemplate('minimal')" class="template-btn active glass rounded-lg px-4 py-2 text-sm border border-white/10 transition hover:bg-white/5">🤍 Clean Minimal</button>
+                <button onclick="setTemplate('blue')" class="template-btn glass rounded-lg px-4 py-2 text-sm border border-white/10 transition hover:bg-white/5">💙 Professional Blue</button>
+                <button onclick="setTemplate('bold')" class="template-btn glass rounded-lg px-4 py-2 text-sm border border-white/10 transition hover:bg-white/5">🖤 Bold Modern</button>
+            </div>
+
+            <!-- ============ INVOICE PREVIEW ============ -->
+            <div id="invoice-output" class="hidden fade-in">
+                <div id="invoice-preview" class="tpl-minimal rounded-2xl overflow-hidden shadow-2xl">
+                    <!-- Header area (styled per template) -->
+                    <div id="inv-header-area" class="p-8">
                         <div class="flex justify-between items-start mb-8">
                             <div>
-                                <h3 class="text-2xl font-bold text-gray-900">INVOICE</h3>
-                                <p class="text-sm text-gray-500 mt-1" id="inv-number">#INV-001</p>
+                                <h3 class="text-2xl font-bold" id="inv-title-text" style="color:#111">INVOICE</h3>
+                                <p class="text-sm mt-1" style="color:#888" id="inv-number-display">#INV-001</p>
                             </div>
                             <div class="text-right">
-                                <p class="font-semibold text-gray-900" id="inv-from-name">Your Business Name</p>
-                                <p class="text-sm text-gray-500" id="inv-from-email">you@email.com</p>
+                                <p class="font-semibold" id="inv-from-name" style="color:#111">Your Business Name</p>
+                                <p class="text-sm" id="inv-from-email" style="color:#888">you@email.com</p>
+                                <p class="text-sm" id="inv-from-address" style="color:#888"></p>
                             </div>
                         </div>
-
-                        <!-- Bill To + Dates -->
                         <div class="grid grid-cols-2 gap-8 mb-8">
                             <div>
-                                <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Bill To</p>
-                                <p class="font-semibold" id="inv-client">Client Name</p>
-                                <p class="text-sm text-gray-500" id="inv-client-email">client@company.com</p>
+                                <p class="text-xs uppercase tracking-wider mb-1" style="color:#aaa">Bill To</p>
+                                <p class="font-semibold" id="inv-client-name" style="color:#111">Client Name</p>
+                                <p class="text-sm" id="inv-client-email" style="color:#888">client@company.com</p>
+                                <p class="text-sm" id="inv-client-address" style="color:#888"></p>
                             </div>
                             <div class="text-right">
                                 <div class="mb-2">
-                                    <p class="text-xs text-gray-400 uppercase tracking-wider">Date</p>
-                                    <p class="text-sm" id="inv-date">Mar 22, 2026</p>
+                                    <p class="text-xs uppercase tracking-wider" style="color:#aaa">Date</p>
+                                    <p class="text-sm" id="inv-date" style="color:#111">Mar 28, 2026</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-400 uppercase tracking-wider">Due Date</p>
-                                    <p class="text-sm font-semibold text-emerald-600" id="inv-due">Apr 21, 2026</p>
+                                    <p class="text-xs uppercase tracking-wider" style="color:#aaa">Due Date</p>
+                                    <p class="text-sm font-semibold" id="inv-due" style="color:#059669">Apr 27, 2026</p>
+                                </div>
+                                <div class="mt-2">
+                                    <p class="text-xs uppercase tracking-wider" style="color:#aaa">Currency</p>
+                                    <p class="text-sm" id="inv-currency-display" style="color:#111">USD</p>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Line Items -->
+                        <!-- Line Items Table -->
                         <table class="w-full mb-8">
                             <thead>
-                                <tr class="border-b-2 border-gray-200">
-                                    <th class="text-left text-xs text-gray-400 uppercase tracking-wider pb-2">Description</th>
-                                    <th class="text-right text-xs text-gray-400 uppercase tracking-wider pb-2">Qty</th>
-                                    <th class="text-right text-xs text-gray-400 uppercase tracking-wider pb-2">Rate</th>
-                                    <th class="text-right text-xs text-gray-400 uppercase tracking-wider pb-2">Amount</th>
+                                <tr id="inv-table-header" style="border-bottom: 2px solid #e5e7eb">
+                                    <th class="text-left text-xs uppercase tracking-wider pb-2" style="color:#aaa">Description</th>
+                                    <th class="text-right text-xs uppercase tracking-wider pb-2" style="color:#aaa">Qty</th>
+                                    <th class="text-right text-xs uppercase tracking-wider pb-2" style="color:#aaa">Rate</th>
+                                    <th class="text-right text-xs uppercase tracking-wider pb-2" style="color:#aaa">Amount</th>
                                 </tr>
                             </thead>
-                            <tbody id="inv-items">
-                                <!-- Populated by JS -->
-                            </tbody>
+                            <tbody id="inv-items"></tbody>
                         </table>
-
                         <!-- Totals -->
                         <div class="flex justify-end">
                             <div class="w-64">
-                                <div class="flex justify-between py-2 text-sm">
-                                    <span class="text-gray-500">Subtotal</span>
-                                    <span id="inv-subtotal">$0.00</span>
+                                <div class="flex justify-between py-2 text-sm" style="color:#666">
+                                    <span>Subtotal</span><span id="inv-subtotal" style="color:#111">$0.00</span>
                                 </div>
-                                <div class="flex justify-between py-2 text-sm">
-                                    <span class="text-gray-500">Tax (13% HST)</span>
-                                    <span id="inv-tax">$0.00</span>
+                                <div id="inv-discount-row" class="hidden flex justify-between py-2 text-sm" style="color:#666">
+                                    <span>Discount</span><span id="inv-discount" style="color:#dc2626">-$0.00</span>
                                 </div>
-                                <div class="flex justify-between py-3 border-t-2 border-gray-900 font-bold text-lg">
-                                    <span>Total</span>
-                                    <span class="text-emerald-600" id="inv-total">$0.00</span>
+                                <div class="flex justify-between py-2 text-sm" style="color:#666">
+                                    <span id="inv-tax-label">Tax (13%)</span><span id="inv-tax" style="color:#111">$0.00</span>
+                                </div>
+                                <div class="flex justify-between py-3 font-bold text-lg" id="inv-total-row" style="border-top: 2px solid #111">
+                                    <span style="color:#111">Total</span><span id="inv-total" style="color:#059669">$0.00</span>
                                 </div>
                             </div>
                         </div>
-
                         <!-- Payment Terms -->
-                        <div class="mt-8 pt-6 border-t border-gray-200">
-                            <p class="text-xs text-gray-400 uppercase tracking-wider mb-2">Payment Terms</p>
-                            <p class="text-sm text-gray-600" id="inv-terms">Net 30 — Payment due within 30 days of invoice date.</p>
-                            <p class="text-sm text-gray-600 mt-1" id="inv-method">Accept: Bank transfer, PayPal, Stripe</p>
+                        <div class="mt-8 pt-6" style="border-top: 1px solid #e5e7eb">
+                            <p class="text-xs uppercase tracking-wider mb-2" style="color:#aaa">Payment Terms</p>
+                            <p class="text-sm" id="inv-terms" style="color:#666">Net 30 — Payment due within 30 days of invoice date.</p>
+                            <p class="text-sm mt-1" id="inv-method" style="color:#666">Accept: Bank transfer, PayPal, Stripe</p>
+                            <p class="text-sm mt-1" id="inv-notes" style="color:#666"></p>
+                        </div>
+                        <!-- Footer -->
+                        <div class="mt-6 text-center">
+                            <p class="text-xs" style="color:#ccc">Generated by InvoicePilot — invoicepilot.ai</p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Actions -->
-                    <div class="flex gap-3 mt-4">
-                        <button onclick="downloadPDF()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl font-medium transition">
-                            📄 Download PDF
-                        </button>
-                        <button onclick="copyInvoice()" class="flex-1 glass hover:bg-white/10 text-white py-2.5 rounded-xl font-medium transition">
-                            📋 Copy Text
-                        </button>
-                    </div>
+                <!-- Actions -->
+                <div class="flex flex-wrap gap-3 mt-6">
+                    <button onclick="downloadPDF()" class="flex-1 min-w-[140px] bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl font-medium transition">📄 Download PDF</button>
+                    <button onclick="copyInvoiceText()" class="flex-1 min-w-[140px] glass hover:bg-white/10 text-white py-2.5 rounded-xl font-medium transition">📋 Copy Text</button>
+                    <button onclick="saveInvoice()" class="flex-1 min-w-[140px] glass hover:bg-white/10 text-white py-2.5 rounded-xl font-medium transition">💾 Save Invoice</button>
+                    <button onclick="editCurrentInvoice()" class="flex-1 min-w-[140px] glass hover:bg-white/10 text-white py-2.5 rounded-xl font-medium transition">✏️ Edit</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Auto-Chase Section -->
-    <section id="chase" class="py-20 px-6">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-4">Auto-chase late invoices</h2>
-            <p class="text-gray-400 text-center mb-10">AI generates escalating follow-up emails. Click to see all three levels.</p>
+    <!-- ============ INVOICE HISTORY ============ -->
+    <section id="history" class="py-20 px-6">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-4">Invoice History</h2>
+            <p class="text-gray-400 text-center mb-8">All your invoices, saved locally in your browser. No account needed.</p>
 
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Friendly (Day 3) -->
-                <div class="glass rounded-2xl p-6 cursor-pointer hover:bg-white/5 transition" onclick="showChase(0)">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="text-2xl">😊</span>
-                        <div>
-                            <div class="font-semibold text-emerald-400">Friendly Nudge</div>
-                            <div class="text-xs text-gray-500">Day 3 overdue</div>
-                        </div>
-                    </div>
-                    <p class="text-sm text-gray-400">"Just a quick follow-up on Invoice #1042..."</p>
+            <!-- Summary Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="glass rounded-xl p-4">
+                    <div class="text-xs text-gray-500 mb-1">Total Invoices</div>
+                    <div class="text-2xl font-bold text-white" id="hist-total">0</div>
                 </div>
-
-                <!-- Firm (Day 14) -->
-                <div class="glass rounded-2xl p-6 cursor-pointer hover:bg-white/5 transition" onclick="showChase(1)">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="text-2xl">📋</span>
-                        <div>
-                            <div class="font-semibold text-yellow-400">Professional Reminder</div>
-                            <div class="text-xs text-gray-500">Day 14 overdue</div>
-                        </div>
-                    </div>
-                    <p class="text-sm text-gray-400">"This is a reminder that payment of $3,500..."</p>
+                <div class="glass rounded-xl p-4">
+                    <div class="text-xs text-gray-500 mb-1">Outstanding</div>
+                    <div class="text-2xl font-bold text-yellow-400" id="hist-outstanding">$0</div>
                 </div>
-
-                <!-- Final (Day 30) -->
-                <div class="glass rounded-2xl p-6 cursor-pointer hover:bg-white/5 transition" onclick="showChase(2)">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="text-2xl">⚠️</span>
-                        <div>
-                            <div class="font-semibold text-red-400">Final Notice</div>
-                            <div class="text-xs text-gray-500">Day 30 overdue</div>
-                        </div>
-                    </div>
-                    <p class="text-sm text-gray-400">"This is the final notice regarding..."</p>
+                <div class="glass rounded-xl p-4">
+                    <div class="text-xs text-gray-500 mb-1">Overdue</div>
+                    <div class="text-2xl font-bold text-red-400" id="hist-overdue">$0</div>
+                </div>
+                <div class="glass rounded-xl p-4">
+                    <div class="text-xs text-gray-500 mb-1">Paid</div>
+                    <div class="text-2xl font-bold text-emerald-400" id="hist-paid">$0</div>
                 </div>
             </div>
 
-            <!-- Chase Email Preview -->
-            <div id="chase-preview" class="hidden mt-8 glass rounded-2xl p-6 fade-in">
+            <!-- Invoice List -->
+            <div id="history-list" class="space-y-3">
+                <div class="glass rounded-xl p-6 text-center text-gray-500">
+                    <p>No invoices yet. Create your first invoice above! 👆</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ AUTO-CHASE SECTION ============ -->
+    <section id="chase" class="py-20 px-6 bg-white/[0.01]">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-4">Auto-Chase Late Invoices</h2>
+            <p class="text-gray-400 text-center mb-8">Enter your invoice details → get 3 escalating follow-up emails instantly</p>
+
+            <div class="glass rounded-2xl p-8 glow mb-8">
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <input id="chase-client" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" placeholder="Client Name" value="Sarah Chen">
+                    <input id="chase-biz" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" placeholder="Your Business Name" value="Your Business">
+                </div>
+                <div class="grid grid-cols-3 gap-4 mb-4">
+                    <input id="chase-inv-num" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" placeholder="Invoice #" value="INV-1042">
+                    <input id="chase-amount" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" placeholder="Amount" value="$3,500">
+                    <input id="chase-days" type="number" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-emerald-500 focus:outline-none" placeholder="Days overdue" value="14">
+                </div>
+                <button onclick="generateChaseEmails()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-semibold transition">
+                    🔔 Generate Chase Emails
+                </button>
+            </div>
+
+            <!-- Chase Output -->
+            <div id="chase-output" class="space-y-4">
+                <!-- Pre-populated with sample -->
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="glass rounded-2xl p-6 cursor-pointer hover:bg-white/5 transition" onclick="showChaseLevel(0)">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-2xl">😊</span>
+                            <div>
+                                <div class="font-semibold text-emerald-400">Friendly Nudge</div>
+                                <div class="text-xs text-gray-500">Day 3 overdue</div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-400">"Just a quick follow-up on your invoice..."</p>
+                    </div>
+                    <div class="glass rounded-2xl p-6 cursor-pointer hover:bg-white/5 transition" onclick="showChaseLevel(1)">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-2xl">📋</span>
+                            <div>
+                                <div class="font-semibold text-yellow-400">Professional Reminder</div>
+                                <div class="text-xs text-gray-500">Day 14 overdue</div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-400">"This is a reminder that payment..."</p>
+                    </div>
+                    <div class="glass rounded-2xl p-6 cursor-pointer hover:bg-white/5 transition" onclick="showChaseLevel(2)">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-2xl">⚠️</span>
+                            <div>
+                                <div class="font-semibold text-red-400">Final Notice</div>
+                                <div class="text-xs text-gray-500">Day 30 overdue</div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-400">"This is the final notice regarding..."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chase Preview Modal -->
+            <div id="chase-preview" class="hidden mt-6 glass rounded-2xl p-6 fade-in">
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <div class="text-xs text-gray-500">Subject:</div>
                         <div class="font-semibold" id="chase-subject"></div>
                     </div>
-                    <button onclick="document.getElementById('chase-preview').classList.add('hidden')" class="text-gray-500 hover:text-white">✕</button>
+                    <button onclick="document.getElementById('chase-preview').classList.add('hidden')" class="text-gray-500 hover:text-white text-xl">✕</button>
                 </div>
                 <div class="text-sm text-gray-300 whitespace-pre-line" id="chase-body"></div>
-                <button onclick="copyChase()" class="mt-4 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 px-4 py-2 rounded-lg text-sm transition">📋 Copy Email</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Dashboard Preview -->
-    <section id="dashboard" class="py-20 px-6 bg-white/[0.01]">
-        <div class="max-w-5xl mx-auto">
-            <h2 class="text-3xl font-bold text-center mb-4">Your invoicing command center</h2>
-            <p class="text-gray-400 text-center mb-10">Know exactly where your money is at all times</p>
-
-            <!-- Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="glass rounded-xl p-4">
-                    <div class="text-xs text-gray-500 mb-1">Outstanding</div>
-                    <div class="text-2xl font-bold text-yellow-400">$12,850</div>
-                    <div class="text-xs text-gray-500 mt-1">4 invoices</div>
-                </div>
-                <div class="glass rounded-xl p-4">
-                    <div class="text-xs text-gray-500 mb-1">Overdue</div>
-                    <div class="text-2xl font-bold text-red-400">$3,500</div>
-                    <div class="text-xs text-gray-500 mt-1">1 invoice</div>
-                </div>
-                <div class="glass rounded-xl p-4">
-                    <div class="text-xs text-gray-500 mb-1">Paid (Mar)</div>
-                    <div class="text-2xl font-bold text-emerald-400">$28,200</div>
-                    <div class="text-xs text-gray-500 mt-1">8 invoices</div>
-                </div>
-                <div class="glass rounded-xl p-4">
-                    <div class="text-xs text-gray-500 mb-1">Avg. Pay Time</div>
-                    <div class="text-2xl font-bold text-white">12 days</div>
-                    <div class="text-xs text-emerald-400 mt-1">↓ 5 days vs last month</div>
-                </div>
-            </div>
-
-            <!-- Invoice List -->
-            <div class="glass rounded-2xl overflow-hidden">
-                <table class="w-full">
-                    <thead>
-                        <tr class="border-b border-white/5">
-                            <th class="text-left text-xs text-gray-500 uppercase tracking-wider px-6 py-3">Invoice</th>
-                            <th class="text-left text-xs text-gray-500 uppercase tracking-wider px-6 py-3">Client</th>
-                            <th class="text-right text-xs text-gray-500 uppercase tracking-wider px-6 py-3">Amount</th>
-                            <th class="text-right text-xs text-gray-500 uppercase tracking-wider px-6 py-3 hidden md:table-cell">Due</th>
-                            <th class="text-right text-xs text-gray-500 uppercase tracking-wider px-6 py-3">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b border-white/5 hover:bg-white/[0.02]">
-                            <td class="px-6 py-4 text-sm font-medium">#INV-1048</td>
-                            <td class="px-6 py-4 text-sm text-gray-400">TechStartup Inc.</td>
-                            <td class="px-6 py-4 text-sm text-right">$4,200</td>
-                            <td class="px-6 py-4 text-sm text-right text-gray-500 hidden md:table-cell">Mar 25</td>
-                            <td class="px-6 py-4 text-right"><span class="text-xs bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded-full">Pending</span></td>
-                        </tr>
-                        <tr class="border-b border-white/5 hover:bg-white/[0.02]">
-                            <td class="px-6 py-4 text-sm font-medium">#INV-1047</td>
-                            <td class="px-6 py-4 text-sm text-gray-400">DesignCo Agency</td>
-                            <td class="px-6 py-4 text-sm text-right">$2,750</td>
-                            <td class="px-6 py-4 text-sm text-right text-gray-500 hidden md:table-cell">Mar 30</td>
-                            <td class="px-6 py-4 text-right"><span class="text-xs bg-blue-500/10 text-blue-400 px-2 py-1 rounded-full">Sent</span></td>
-                        </tr>
-                        <tr class="border-b border-white/5 hover:bg-white/[0.02]">
-                            <td class="px-6 py-4 text-sm font-medium">#INV-1044</td>
-                            <td class="px-6 py-4 text-sm text-gray-400">GreenField Corp</td>
-                            <td class="px-6 py-4 text-sm text-right">$3,500</td>
-                            <td class="px-6 py-4 text-sm text-right text-red-400 hidden md:table-cell">Mar 8 ⚠️</td>
-                            <td class="px-6 py-4 text-right"><span class="text-xs bg-red-500/10 text-red-400 px-2 py-1 rounded-full">14 days overdue</span></td>
-                        </tr>
-                        <tr class="border-b border-white/5 hover:bg-white/[0.02]">
-                            <td class="px-6 py-4 text-sm font-medium">#INV-1043</td>
-                            <td class="px-6 py-4 text-sm text-gray-400">Apex Media</td>
-                            <td class="px-6 py-4 text-sm text-right">$5,800</td>
-                            <td class="px-6 py-4 text-sm text-right text-gray-500 hidden md:table-cell">Mar 15</td>
-                            <td class="px-6 py-4 text-right"><span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-full">Paid ✓</span></td>
-                        </tr>
-                        <tr class="hover:bg-white/[0.02]">
-                            <td class="px-6 py-4 text-sm font-medium">#INV-1042</td>
-                            <td class="px-6 py-4 text-sm text-gray-400">StartupLab</td>
-                            <td class="px-6 py-4 text-sm text-right">$2,400</td>
-                            <td class="px-6 py-4 text-sm text-right text-gray-500 hidden md:table-cell">Mar 10</td>
-                            <td class="px-6 py-4 text-right"><span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-full">Paid ✓</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <button onclick="copyChaseEmail()" class="mt-4 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 px-4 py-2 rounded-lg text-sm transition">📋 Copy Email</button>
             </div>
         </div>
     </section>
@@ -414,7 +523,6 @@
         <div class="max-w-5xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-4">Why freelancers switch to InvoicePilot</h2>
             <p class="text-gray-400 text-center mb-10">More features. Less cost. Zero learning curve.</p>
-
             <div class="glass rounded-2xl overflow-hidden overflow-x-auto">
                 <table class="w-full min-w-[600px]">
                     <thead>
@@ -427,55 +535,15 @@
                         </tr>
                     </thead>
                     <tbody class="text-sm">
-                        <tr class="border-b border-white/5">
-                            <td class="px-6 py-3 text-gray-300">AI Invoice Generation</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                            <td class="px-6 py-3 text-center text-gray-500">✗</td>
-                            <td class="px-6 py-3 text-center text-gray-500">✗</td>
-                            <td class="px-6 py-3 text-center text-gray-500">✗</td>
-                        </tr>
-                        <tr class="border-b border-white/5">
-                            <td class="px-6 py-3 text-gray-300">Natural Language Input</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                            <td class="px-6 py-3 text-center text-gray-500">✗</td>
-                            <td class="px-6 py-3 text-center text-gray-500">✗</td>
-                            <td class="px-6 py-3 text-center text-gray-500">✗</td>
-                        </tr>
-                        <tr class="border-b border-white/5">
-                            <td class="px-6 py-3 text-gray-300">Auto-Chase Emails</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓ AI</td>
-                            <td class="px-6 py-3 text-center text-yellow-400">Basic</td>
-                            <td class="px-6 py-3 text-center text-gray-500">✗</td>
-                            <td class="px-6 py-3 text-center text-gray-500">✗</td>
-                        </tr>
-                        <tr class="border-b border-white/5">
-                            <td class="px-6 py-3 text-gray-300">Payment Tracking</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                        </tr>
-                        <tr class="border-b border-white/5">
-                            <td class="px-6 py-3 text-gray-300">PDF Export</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                        </tr>
-                        <tr class="border-b border-white/5">
-                            <td class="px-6 py-3 text-gray-300">Multi-Currency</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                            <td class="px-6 py-3 text-center text-yellow-400">Limited</td>
-                            <td class="px-6 py-3 text-center text-emerald-400">✓</td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-3 text-gray-300 font-semibold">Price</td>
-                            <td class="px-6 py-3 text-center font-bold text-emerald-400">$0-9/mo</td>
-                            <td class="px-6 py-3 text-center text-gray-400">$19-60/mo</td>
-                            <td class="px-6 py-3 text-center text-gray-400">Free*</td>
-                            <td class="px-6 py-3 text-center text-gray-400">$24-39/mo</td>
-                        </tr>
+                        <tr class="border-b border-white/5"><td class="px-6 py-3 text-gray-300">NLP Invoice Generation</td><td class="px-6 py-3 text-center text-emerald-400">✓</td><td class="px-6 py-3 text-center text-gray-500">✗</td><td class="px-6 py-3 text-center text-gray-500">✗</td><td class="px-6 py-3 text-center text-gray-500">✗</td></tr>
+                        <tr class="border-b border-white/5"><td class="px-6 py-3 text-gray-300">Full Editable Builder</td><td class="px-6 py-3 text-center text-emerald-400">✓</td><td class="px-6 py-3 text-center text-emerald-400">✓</td><td class="px-6 py-3 text-center text-emerald-400">✓</td><td class="px-6 py-3 text-center text-emerald-400">✓</td></tr>
+                        <tr class="border-b border-white/5"><td class="px-6 py-3 text-gray-300">Multiple Templates</td><td class="px-6 py-3 text-center text-emerald-400">3</td><td class="px-6 py-3 text-center text-yellow-400">2</td><td class="px-6 py-3 text-center text-gray-500">1</td><td class="px-6 py-3 text-center text-yellow-400">3</td></tr>
+                        <tr class="border-b border-white/5"><td class="px-6 py-3 text-gray-300">Multi-Currency</td><td class="px-6 py-3 text-center text-emerald-400">6</td><td class="px-6 py-3 text-center text-emerald-400">✓</td><td class="px-6 py-3 text-center text-yellow-400">Limited</td><td class="px-6 py-3 text-center text-emerald-400">✓</td></tr>
+                        <tr class="border-b border-white/5"><td class="px-6 py-3 text-gray-300">Auto-Chase Emails</td><td class="px-6 py-3 text-center text-emerald-400">✓ 3 levels</td><td class="px-6 py-3 text-center text-yellow-400">Basic</td><td class="px-6 py-3 text-center text-gray-500">✗</td><td class="px-6 py-3 text-center text-gray-500">✗</td></tr>
+                        <tr class="border-b border-white/5"><td class="px-6 py-3 text-gray-300">Local Storage (No Account)</td><td class="px-6 py-3 text-center text-emerald-400">✓</td><td class="px-6 py-3 text-center text-gray-500">✗</td><td class="px-6 py-3 text-center text-gray-500">✗</td><td class="px-6 py-3 text-center text-gray-500">✗</td></tr>
+                        <tr class="border-b border-white/5"><td class="px-6 py-3 text-gray-300">Works Offline</td><td class="px-6 py-3 text-center text-emerald-400">✓</td><td class="px-6 py-3 text-center text-gray-500">✗</td><td class="px-6 py-3 text-center text-gray-500">✗</td><td class="px-6 py-3 text-center text-gray-500">✗</td></tr>
+                        <tr class="border-b border-white/5"><td class="px-6 py-3 text-gray-300">PDF Export</td><td class="px-6 py-3 text-center text-emerald-400">✓</td><td class="px-6 py-3 text-center text-emerald-400">✓</td><td class="px-6 py-3 text-center text-emerald-400">✓</td><td class="px-6 py-3 text-center text-emerald-400">✓</td></tr>
+                        <tr><td class="px-6 py-3 text-gray-300 font-semibold">Price</td><td class="px-6 py-3 text-center font-bold text-emerald-400">$0-9/mo</td><td class="px-6 py-3 text-center text-gray-400">$19-60/mo</td><td class="px-6 py-3 text-center text-gray-400">Free*</td><td class="px-6 py-3 text-center text-gray-400">$24-39/mo</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -488,26 +556,20 @@
         <div class="max-w-5xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-4">Simple pricing. No surprises.</h2>
             <p class="text-gray-400 text-center mb-12">Start free. Upgrade when you need more.</p>
-
             <div class="grid md:grid-cols-3 gap-6">
-                <!-- Free -->
                 <div class="glass rounded-2xl p-8">
                     <div class="text-sm text-gray-400 mb-2">Starter</div>
                     <div class="text-4xl font-bold mb-1">$0</div>
                     <div class="text-sm text-gray-500 mb-6">forever free</div>
                     <ul class="space-y-3 text-sm text-gray-300 mb-8">
                         <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> 3 invoices/month</li>
-                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> 1 invoice template</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> 1 template</li>
                         <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> PDF download</li>
-                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Basic payment tracking</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Local storage</li>
                         <li class="flex items-center gap-2"><span class="text-gray-600">✗</span> <span class="text-gray-500">Auto-chase emails</span></li>
                     </ul>
-                    <button onclick="document.getElementById('waitlist-section').scrollIntoView({behavior:'smooth'})" class="w-full glass hover:bg-white/10 text-white py-2.5 rounded-xl font-medium transition">
-                        Join Waitlist
-                    </button>
+                    <button onclick="document.getElementById('waitlist-section').scrollIntoView({behavior:'smooth'})" class="w-full glass hover:bg-white/10 text-white py-2.5 rounded-xl font-medium transition">Join Waitlist</button>
                 </div>
-
-                <!-- Pro -->
                 <div class="glass rounded-2xl p-8 border-emerald-500/30 relative">
                     <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full">POPULAR</div>
                     <div class="text-sm text-emerald-400 mb-2">Pro</div>
@@ -516,17 +578,12 @@
                     <ul class="space-y-3 text-sm text-gray-300 mb-8">
                         <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Unlimited invoices</li>
                         <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> All 3 templates</li>
-                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Auto-chase emails (3 levels)</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Auto-chase (3 levels)</li>
                         <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Client database</li>
-                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Recurring invoices</li>
                         <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Multi-currency</li>
                     </ul>
-                    <button onclick="document.getElementById('waitlist-section').scrollIntoView({behavior:'smooth'})" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl font-medium transition">
-                        Join Waitlist
-                    </button>
+                    <button onclick="document.getElementById('waitlist-section').scrollIntoView({behavior:'smooth'})" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl font-medium transition">Join Waitlist</button>
                 </div>
-
-                <!-- Business -->
                 <div class="glass rounded-2xl p-8">
                     <div class="text-sm text-gray-400 mb-2">Business</div>
                     <div class="text-4xl font-bold mb-1">$19<span class="text-lg font-normal text-gray-400">/mo</span></div>
@@ -539,9 +596,7 @@
                         <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Expense tracking</li>
                         <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Revenue reports</li>
                     </ul>
-                    <button onclick="document.getElementById('waitlist-section').scrollIntoView({behavior:'smooth'})" class="w-full glass hover:bg-white/10 text-white py-2.5 rounded-xl font-medium transition">
-                        Join Waitlist
-                    </button>
+                    <button onclick="document.getElementById('waitlist-section').scrollIntoView({behavior:'smooth'})" class="w-full glass hover:bg-white/10 text-white py-2.5 rounded-xl font-medium transition">Join Waitlist</button>
                 </div>
             </div>
         </div>
@@ -551,40 +606,36 @@
     <section id="waitlist-section" class="py-20 px-6">
         <div class="max-w-xl mx-auto text-center">
             <h2 class="text-3xl font-bold mb-4">Get early access</h2>
-            <p class="text-gray-400 mb-8">Be the first to try InvoicePilot. Free for early adopters.</p>
-
+            <p class="text-gray-400 mb-8">Be the first to try InvoicePilot Pro. Free for early adopters.</p>
             <div id="waitlist-form" class="glass rounded-2xl p-8">
-                <input type="email" id="wl-email" placeholder="you@email.com" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none transition mb-3">
-                <select id="wl-role" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-400 focus:border-emerald-500 focus:outline-none transition mb-3">
-                    <option value="">What best describes you?</option>
-                    <option value="freelancer">Freelancer</option>
-                    <option value="agency">Agency Owner</option>
-                    <option value="consultant">Consultant</option>
-                    <option value="creator">Content Creator</option>
-                    <option value="other">Other</option>
-                </select>
-                <select id="wl-invoices" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-400 focus:border-emerald-500 focus:outline-none transition mb-4">
-                    <option value="">How many invoices/month?</option>
-                    <option value="1-5">1-5</option>
-                    <option value="5-20">5-20</option>
-                    <option value="20-50">20-50</option>
-                    <option value="50+">50+</option>
-                </select>
-                <button onclick="submitWaitlist()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-semibold transition">
-                    🚀 Get Early Access
-                </button>
-            </div>
-
-            <div id="waitlist-success" class="hidden glass rounded-2xl p-8 fade-in">
-                <div class="text-4xl mb-4">🎉</div>
-                <h3 class="text-xl font-bold mb-2">You're on the list!</h3>
-                <p class="text-gray-400" id="waitlist-position">You're #312 on the waitlist</p>
-                <p class="text-sm text-gray-500 mt-3">We'll email you when InvoicePilot launches.</p>
+                <form action="https://formsubmit.co/atalashutosh@gmail.com" method="POST">
+                    <input type="hidden" name="_subject" value="InvoicePilot Waitlist Signup">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" value="https://atalovesyou.github.io/invoicepilot/">
+                    <input type="hidden" name="product" value="invoicepilot">
+                    <input type="email" name="email" id="wl-email" placeholder="you@email.com" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none transition mb-3">
+                    <select name="role" id="wl-role" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-400 focus:border-emerald-500 focus:outline-none transition mb-3">
+                        <option value="">What best describes you?</option>
+                        <option value="freelancer">Freelancer</option>
+                        <option value="agency">Agency Owner</option>
+                        <option value="consultant">Consultant</option>
+                        <option value="creator">Content Creator</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <select name="invoices_per_month" id="wl-invoices" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-gray-400 focus:border-emerald-500 focus:outline-none transition mb-4">
+                        <option value="">How many invoices/month?</option>
+                        <option value="1-5">1-5</option>
+                        <option value="5-20">5-20</option>
+                        <option value="20-50">20-50</option>
+                        <option value="50+">50+</option>
+                    </select>
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-semibold transition">🚀 Get Early Access</button>
+                </form>
             </div>
         </div>
     </section>
 
-    <!-- Cross-Promotion: OpenSphere Labs -->
+    <!-- Cross-Promotion -->
     <section class="py-16 border-t border-white/5">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-10">
@@ -593,34 +644,14 @@
                 <p class="text-gray-400 text-sm mt-2">AI-powered micro-tools for freelancers &amp; small businesses</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <a href="https://atalovesyou.github.io/unslop-ai/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group">
-                    <div class="text-lg mb-1">🧹 UnSlop.ai</div>
-                    <div class="text-xs text-gray-400 group-hover:text-gray-300">AI slop detector & humanizer</div>
-                </a>
-                <a href="https://atalovesyou.github.io/contractpilot/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group">
-                    <div class="text-lg mb-1">📝 ContractPilot</div>
-                    <div class="text-xs text-gray-400 group-hover:text-gray-300">AI contracts for freelancers</div>
-                </a>
-                <a href="https://atalovesyou.github.io/intakebot/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group">
-                    <div class="text-lg mb-1">💬 IntakeBot</div>
-                    <div class="text-xs text-gray-400 group-hover:text-gray-300">AI conversational client intake</div>
-                </a>
-                <a href="https://atalovesyou.github.io/ghosttracker/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group">
-                    <div class="text-lg mb-1">👻 GhostTracker</div>
-                    <div class="text-xs text-gray-400 group-hover:text-gray-300">Proposal analytics for freelancers</div>
-                </a>
-                <a href="https://atalovesyou.github.io/reviewagent/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group">
-                    <div class="text-lg mb-1">⭐ ReviewAgent</div>
-                    <div class="text-xs text-gray-400 group-hover:text-gray-300">AI review management for SMBs</div>
-                </a>
-                <a href="https://atalovesyou.github.io/nameforge/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group">
-                    <div class="text-lg mb-1">✨ NameForge</div>
-                    <div class="text-xs text-gray-400 group-hover:text-gray-300">AI business name generator</div>
-                </a>
-                <a href="https://atalovesyou.github.io/immigranttax-ai/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group">
-                    <div class="text-lg mb-1">🌍 ImmigrantTax.ai</div>
-                    <div class="text-xs text-gray-400 group-hover:text-gray-300">Cross-border tax for immigrants</div>
-                </a>
+                <a href="https://atalovesyou.github.io/unslop-ai/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group"><div class="text-lg mb-1">🧹 UnSlop.ai</div><div class="text-xs text-gray-400 group-hover:text-gray-300">AI slop detector & humanizer</div></a>
+                <a href="https://atalovesyou.github.io/contractpilot/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group"><div class="text-lg mb-1">📝 ContractPilot</div><div class="text-xs text-gray-400 group-hover:text-gray-300">AI contract review (40+ patterns)</div></a>
+                <a href="https://atalovesyou.github.io/intakebot/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group"><div class="text-lg mb-1">💬 IntakeBot</div><div class="text-xs text-gray-400 group-hover:text-gray-300">AI conversational client intake</div></a>
+                <a href="https://atalovesyou.github.io/ghosttracker/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group"><div class="text-lg mb-1">👻 GhostTracker</div><div class="text-xs text-gray-400 group-hover:text-gray-300">Proposal analytics</div></a>
+                <a href="https://atalovesyou.github.io/proposalpilot/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group"><div class="text-lg mb-1">📑 ProposalPilot</div><div class="text-xs text-gray-400 group-hover:text-gray-300">AI proposal generator</div></a>
+                <a href="https://atalovesyou.github.io/reviewagent/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group"><div class="text-lg mb-1">⭐ ReviewAgent</div><div class="text-xs text-gray-400 group-hover:text-gray-300">AI review management</div></a>
+                <a href="https://atalovesyou.github.io/nameforge/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group"><div class="text-lg mb-1">✨ NameForge</div><div class="text-xs text-gray-400 group-hover:text-gray-300">AI business name generator</div></a>
+                <a href="https://atalovesyou.github.io/immigranttax-ai/" target="_blank" class="glass rounded-xl p-4 hover:bg-white/5 transition group"><div class="text-lg mb-1">🌍 ImmigrantTax.ai</div><div class="text-xs text-gray-400 group-hover:text-gray-300">Cross-border tax analysis</div></a>
             </div>
             <div class="text-center mt-8">
                 <a href="https://atalovesyou.github.io/opensphere-labs/" target="_blank" class="text-sm text-emerald-400 hover:text-emerald-300 transition">View all products →</a>
@@ -641,221 +672,747 @@
         </div>
     </footer>
 
+    <!-- ============ JAVASCRIPT ============ -->
     <script>
-    // Templates
-    const templates = {
+    // ===== CONSTANTS =====
+    const CURRENCIES = { USD:'$', CAD:'$', EUR:'€', GBP:'£', AUD:'$', INR:'₹' };
+    const STORAGE_KEY = 'invoicepilot_invoices';
+    const SETTINGS_KEY = 'invoicepilot_settings';
+
+    // ===== STATE =====
+    let currentInvoice = null;  // The invoice being previewed
+    let currentTemplate = 'minimal';
+    let lineItems = [
+        { description: '', qty: 1, unit: 'hrs', rate: 0 }
+    ];
+
+    // ===== TEMPLATES (NLP quick start) =====
+    const nlpTemplates = {
         webdev: "I built a responsive React dashboard for TechStartup Inc. 32 hours of development at $125/hour, plus 8 hours of bug fixes at $100/hour. Also set up CI/CD pipeline, flat fee $400. Net-30 payment terms.",
         design: "Completed brand identity package for Fresh Bakery Co. Logo design: $1,500. Business card design: $300. Social media kit (20 templates): $800. Two rounds of revisions included. Due on receipt.",
         writing: "Wrote 8 blog articles for SaaS Weekly, 1,500 words each at $0.15/word. Also created 3 email newsletter sequences (5 emails each) at $200 per sequence. Net-15.",
         consulting: "Provided 6 hours of product strategy consulting for FinanceApp at $250/hour. Delivered market analysis report: $1,200 flat fee. Two follow-up calls included. Due within 14 days.",
-        photo: "Shot 4-hour corporate headshot session for Law & Associates. 15 edited portraits at $75 each, plus 2 group photos at $200 each. Studio rental included in quote. Net-30.",
-        coaching: "Delivered 4 executive coaching sessions for Jane Chen, 90 minutes each at $350/session. Included: personality assessment ($200), development plan document ($300). Payment due on receipt."
+        photo: "Shot 4-hour corporate headshot session for Law & Associates. 15 edited portraits at $75 each, plus 2 group photos at $200 each. Studio rental included. Net-30.",
+        coaching: "Delivered 4 executive coaching sessions for Jane Chen, 90 minutes each at $350/session. Included personality assessment: $200. Development plan document: $300. Payment due on receipt."
     };
 
-    function useTemplate(key) {
-        document.getElementById('work-description').value = templates[key];
+    function useTemplate(key) { document.getElementById('work-description').value = nlpTemplates[key]; }
+
+    // ===== TAB SWITCHING =====
+    function showBuilderTab(tab) {
+        document.getElementById('panel-quick').classList.toggle('hidden', tab !== 'quick');
+        document.getElementById('panel-manual').classList.toggle('hidden', tab !== 'manual');
+        document.getElementById('tab-quick').classList.toggle('active', tab === 'quick');
+        document.getElementById('tab-manual').classList.toggle('active', tab === 'manual');
+        if (tab === 'manual') renderLineItems();
     }
 
-    // Parse natural language into invoice data
+    // ===== NLP PARSER (Enhanced v2.0) =====
     function parseDescription(text) {
         const items = [];
-        let clientName = "Client";
-        let terms = "Net 30";
+        let clientName = 'Client';
+        let terms = 'Net 30';
+        let termsDays = 30;
+        let currency = 'USD';
 
-        // Extract client name
-        const clientMatch = text.match(/(?:for|to|client[:\s])\s+([A-Z][a-zA-Z\s&.']+?)(?:\.|,|\s+at\s|\s+\d|\s+–|\s+-)/);
-        if (clientMatch) clientName = clientMatch[1].trim();
-
-        // Extract hourly items: "X hours ... at $Y/hour"
-        const hourlyRegex = /(\d+)\s*hours?\s+(?:of\s+)?([^,\.]+?)(?:\s+at\s+\$?([\d,]+(?:\.\d+)?)(?:\/(?:hr|hour))?)/gi;
-        let match;
-        while ((match = hourlyRegex.exec(text)) !== null) {
-            items.push({
-                description: match[2].trim(),
-                qty: parseInt(match[1]),
-                rate: parseFloat(match[3].replace(',', '')),
-                unit: 'hrs'
-            });
+        // Extract client name - multiple patterns
+        const clientPatterns = [
+            /(?:for|to|client[:\s])\s+([A-Z][a-zA-Z\s&.'']+?)(?:\.|,|\s+at\s|\s+\d|\s+–|\s+-|$)/,
+            /(?:for|to)\s+([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){0,3})/
+        ];
+        for (const pat of clientPatterns) {
+            const m = text.match(pat);
+            if (m) { clientName = m[1].trim().replace(/\s+$/, ''); break; }
         }
 
-        // Extract flat-fee items: "description: $X" or "description, flat fee $X" or "description $X flat"
-        const flatRegex = /([A-Za-z][^$\n,]{3,?})(?:[:,]\s*(?:flat\s+fee\s+)?)?\$?([\d,]+(?:\.\d+)?)\s*(?:flat|each)?/gi;
-        while ((match = flatRegex.exec(text)) !== null) {
-            const desc = match[1].trim();
-            const amount = parseFloat(match[2].replace(',', ''));
-            // Skip if already captured as hourly or if it looks like a rate
-            if (!desc.match(/hours?|at|per/i) && amount > 50 && !items.some(i => i.description.toLowerCase() === desc.toLowerCase())) {
-                items.push({
-                    description: desc,
-                    qty: 1,
-                    rate: amount,
-                    unit: 'ea'
-                });
+        // Extract currency hints
+        if (/CAD|Canadian/i.test(text)) currency = 'CAD';
+        else if (/EUR|€|Euro/i.test(text)) currency = 'EUR';
+        else if (/GBP|£|British|Pound/i.test(text)) currency = 'GBP';
+        else if (/AUD|Australian/i.test(text)) currency = 'AUD';
+        else if (/INR|₹|Rupee/i.test(text)) currency = 'INR';
+
+        // 1. Hourly items: "X hours ... at $Y/hour"
+        const hourlyRe = /(\d+)\s*hours?\s+(?:of\s+)?([^,.$]+?)(?:\s+at\s+[$€£₹]?([\d,]+(?:\.\d+)?)(?:\s*\/\s*(?:hr|hour))?)/gi;
+        let m;
+        while ((m = hourlyRe.exec(text)) !== null) {
+            items.push({ description: m[2].trim(), qty: parseInt(m[1]), rate: parseFloat(m[3].replace(/,/g, '')), unit: 'hrs' });
+        }
+
+        // 2. Per-unit: "X items/portraits/articles at $Y each"
+        const unitRe = /(\d+)\s+([a-zA-Z][^$€£₹,]+?)\s+at\s+[$€£₹]?([\d,]+(?:\.\d+)?)\s*(?:each|per|\/)/gi;
+        while ((m = unitRe.exec(text)) !== null) {
+            const d = m[2].trim();
+            if (!items.some(i => i.description.toLowerCase() === d.toLowerCase())) {
+                items.push({ description: d, qty: parseInt(m[1]), rate: parseFloat(m[3].replace(/,/g, '')), unit: 'ea' });
             }
         }
 
-        // Extract per-unit items: "X items at $Y each"
-        const unitRegex = /(\d+)\s+([a-zA-Z][^$]+?)\s+at\s+\$?([\d,]+(?:\.\d+)?)\s*(?:each|per|\/)/gi;
-        while ((match = unitRegex.exec(text)) !== null) {
-            const desc = match[2].trim();
-            if (!items.some(i => i.description.toLowerCase() === desc.toLowerCase())) {
-                items.push({
-                    description: desc,
-                    qty: parseInt(match[1]),
-                    rate: parseFloat(match[3].replace(',', '')),
-                    unit: 'ea'
-                });
+        // 3. Per-word: "X words at $Y/word"
+        const wordRe = /(\d[\d,]*)\s*words?\s+.*?at\s+[$€£₹]?([\d.]+)\s*\/?\s*word/gi;
+        while ((m = wordRe.exec(text)) !== null) {
+            items.push({ description: 'Writing services', qty: parseInt(m[1].replace(/,/g, '')), rate: parseFloat(m[2]), unit: 'words' });
+        }
+
+        // 4. Flat fee: "Description: $X" or "Description — $X" or "Description $X flat"
+        const flatPatterns = [
+            /([A-Za-z][^$€£₹\n]{3,?})(?::\s*|,\s*(?:flat\s+fee\s+)?)[$€£₹]([\d,]+(?:\.\d+)?)\s*(?:flat)?/gi,
+            /([A-Za-z][^$€£₹\n]{3,?})\s*[-–—]\s*[$€£₹]([\d,]+(?:\.\d+)?)/gi,
+            /[$€£₹]([\d,]+(?:\.\d+)?)\s+(?:for\s+)?([a-zA-Z][^.$€£₹\n]{3,}?)(?:\.|,|$)/gi
+        ];
+        for (const re of flatPatterns) {
+            while ((m = re.exec(text)) !== null) {
+                let desc, amt;
+                if (re === flatPatterns[2]) { amt = parseFloat(m[1].replace(/,/g, '')); desc = m[2].trim(); }
+                else { desc = m[1].trim(); amt = parseFloat(m[2].replace(/,/g, '')); }
+                if (amt >= 50 && !desc.match(/hours?|at|per\b|wrote|built|provided|delivered|shot|completed/i) &&
+                    !items.some(i => Math.abs(i.qty * i.rate - amt) < 1)) {
+                    items.push({ description: desc, qty: 1, rate: amt, unit: 'ea' });
+                }
             }
         }
 
-        // Extract payment terms
-        const termsMatch = text.match(/net[- ]?(\d+)/i);
-        if (termsMatch) terms = `Net ${termsMatch[1]}`;
-        else if (text.match(/due\s+on\s+receipt/i)) terms = "Due on Receipt";
-        else if (text.match(/(?:due\s+)?within\s+(\d+)\s+days/i)) terms = `Net ${text.match(/within\s+(\d+)/i)[1]}`;
+        // Payment terms
+        const termsRe = text.match(/net[- ]?(\d+)/i);
+        if (termsRe) { terms = `Net ${termsRe[1]}`; termsDays = parseInt(termsRe[1]); }
+        else if (/due\s+on\s+receipt/i.test(text)) { terms = 'Due on Receipt'; termsDays = 0; }
+        else if (/within\s+(\d+)\s+days/i.test(text)) { const d = text.match(/within\s+(\d+)/i); terms = `Net ${d[1]}`; termsDays = parseInt(d[1]); }
 
-        // Fallback: if no items parsed, create one from the whole description
+        // Fallback
         if (items.length === 0) {
-            const amountMatch = text.match(/\$?([\d,]+(?:\.\d+)?)/);
-            items.push({
-                description: "Professional Services",
-                qty: 1,
-                rate: amountMatch ? parseFloat(amountMatch[1].replace(',', '')) : 1000,
-                unit: 'ea'
-            });
+            const amtM = text.match(/[$€£₹]([\d,]+(?:\.\d+)?)/);
+            items.push({ description: 'Professional Services', qty: 1, rate: amtM ? parseFloat(amtM[1].replace(/,/g, '')) : 1000, unit: 'ea' });
         }
 
-        return { items, clientName, terms };
+        return { items, clientName, terms, termsDays, currency };
     }
 
-    function generateInvoice() {
+    // ===== GENERATE FROM NLP =====
+    function generateFromNLP() {
         const desc = document.getElementById('work-description').value.trim();
         if (!desc) { alert('Please describe your work first!'); return; }
+        const parsed = parseDescription(desc);
 
-        const { items, clientName, terms } = parseDescription(desc);
+        // Load saved settings
+        const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
 
-        // Set invoice details
-        const invNum = Math.floor(Math.random() * 9000) + 1000;
-        document.getElementById('inv-number').textContent = `#INV-${invNum}`;
-        document.getElementById('inv-client').textContent = clientName;
-        document.getElementById('inv-client-email').textContent = clientName.toLowerCase().replace(/[^a-z]/g, '') + '@company.com';
-
+        const invNum = nextInvoiceNumber();
         const today = new Date();
         const dueDate = new Date(today);
-        const netDays = parseInt((terms.match(/\d+/) || ['30'])[0]);
-        if (terms === "Due on Receipt") dueDate.setDate(today.getDate());
-        else dueDate.setDate(today.getDate() + netDays);
+        dueDate.setDate(today.getDate() + parsed.termsDays);
 
-        document.getElementById('inv-date').textContent = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        document.getElementById('inv-due').textContent = dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        document.getElementById('inv-terms').textContent = terms === "Due on Receipt" ? "Due on Receipt" : `${terms} — Payment due within ${netDays} days of invoice date.`;
+        currentInvoice = {
+            id: crypto.randomUUID ? crypto.randomUUID() : 'inv-' + Date.now(),
+            number: invNum,
+            fromName: settings.fromName || 'Your Business Name',
+            fromEmail: settings.fromEmail || 'you@email.com',
+            fromAddress: settings.fromAddress || '',
+            clientName: parsed.clientName,
+            clientEmail: parsed.clientName.toLowerCase().replace(/[^a-z]/g, '') + '@company.com',
+            clientAddress: '',
+            date: today.toISOString().split('T')[0],
+            dueDate: dueDate.toISOString().split('T')[0],
+            terms: parsed.terms,
+            termsDays: parsed.termsDays,
+            currency: parsed.currency,
+            taxRate: 13,
+            discount: 0,
+            discountType: 'percent',
+            items: parsed.items,
+            notes: 'Thank you for your business!',
+            status: 'draft',
+            createdAt: today.toISOString()
+        };
 
-        // Render line items
+        renderInvoicePreview();
+    }
+
+    // ===== GENERATE FROM MANUAL =====
+    function generateFromManual() {
+        const invNum = document.getElementById('m-inv-number').value || nextInvoiceNumber();
+        const dateStr = document.getElementById('m-inv-date').value || new Date().toISOString().split('T')[0];
+        const termsDays = parseInt(document.getElementById('m-terms').value);
+        const dueDate = new Date(dateStr);
+        dueDate.setDate(dueDate.getDate() + termsDays);
+        const taxRate = getEffectiveTaxRate();
+
+        currentInvoice = {
+            id: crypto.randomUUID ? crypto.randomUUID() : 'inv-' + Date.now(),
+            number: invNum,
+            fromName: document.getElementById('m-from-name').value || 'Your Business Name',
+            fromEmail: document.getElementById('m-from-email').value || 'you@email.com',
+            fromAddress: document.getElementById('m-from-address').value || '',
+            clientName: document.getElementById('m-client-name').value || 'Client',
+            clientEmail: document.getElementById('m-client-email').value || '',
+            clientAddress: document.getElementById('m-client-address').value || '',
+            date: dateStr,
+            dueDate: dueDate.toISOString().split('T')[0],
+            terms: termsDays === 0 ? 'Due on Receipt' : `Net ${termsDays}`,
+            termsDays,
+            currency: document.getElementById('m-currency').value,
+            taxRate,
+            discount: parseFloat(document.getElementById('m-discount').value) || 0,
+            discountType: document.getElementById('m-discount-type').value,
+            items: lineItems.filter(i => i.description && i.rate > 0),
+            notes: document.getElementById('m-notes').value || '',
+            status: 'draft',
+            createdAt: new Date().toISOString()
+        };
+
+        if (currentInvoice.items.length === 0) { alert('Please add at least one line item with a description and rate.'); return; }
+
+        // Save settings for next time
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify({
+            fromName: currentInvoice.fromName,
+            fromEmail: currentInvoice.fromEmail,
+            fromAddress: currentInvoice.fromAddress
+        }));
+
+        renderInvoicePreview();
+    }
+
+    // ===== RENDER INVOICE PREVIEW =====
+    function renderInvoicePreview() {
+        if (!currentInvoice) return;
+        const inv = currentInvoice;
+        const sym = CURRENCIES[inv.currency] || '$';
+
+        document.getElementById('inv-number-display').textContent = '#' + inv.number;
+        document.getElementById('inv-from-name').textContent = inv.fromName;
+        document.getElementById('inv-from-email').textContent = inv.fromEmail;
+        document.getElementById('inv-from-address').textContent = inv.fromAddress;
+        document.getElementById('inv-client-name').textContent = inv.clientName;
+        document.getElementById('inv-client-email').textContent = inv.clientEmail;
+        document.getElementById('inv-client-address').textContent = inv.clientAddress;
+        document.getElementById('inv-date').textContent = formatDate(inv.date);
+        document.getElementById('inv-due').textContent = formatDate(inv.dueDate);
+        document.getElementById('inv-currency-display').textContent = inv.currency;
+
+        // Line items
         const tbody = document.getElementById('inv-items');
         tbody.innerHTML = '';
         let subtotal = 0;
-
-        items.forEach(item => {
+        inv.items.forEach(item => {
             const amount = item.qty * item.rate;
             subtotal += amount;
             const tr = document.createElement('tr');
-            tr.className = 'border-b border-gray-100';
+            tr.style.borderBottom = '1px solid #e5e7eb';
             tr.innerHTML = `
-                <td class="py-3 text-sm">${item.description}</td>
+                <td class="py-3 text-sm">${escHtml(item.description)}</td>
                 <td class="py-3 text-sm text-right">${item.qty} ${item.unit}</td>
-                <td class="py-3 text-sm text-right">$${item.rate.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                <td class="py-3 text-sm text-right font-medium">$${amount.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                <td class="py-3 text-sm text-right">${sym}${item.rate.toLocaleString('en-US',{minimumFractionDigits:2})}</td>
+                <td class="py-3 text-sm text-right font-medium">${sym}${amount.toLocaleString('en-US',{minimumFractionDigits:2})}</td>
             `;
             tbody.appendChild(tr);
         });
 
-        const tax = subtotal * 0.13;
-        const total = subtotal + tax;
+        // Discount
+        let discountAmount = 0;
+        if (inv.discount > 0) {
+            discountAmount = inv.discountType === 'percent' ? subtotal * (inv.discount / 100) : inv.discount;
+            document.getElementById('inv-discount-row').classList.remove('hidden');
+            document.getElementById('inv-discount').textContent = `-${sym}${discountAmount.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        } else {
+            document.getElementById('inv-discount-row').classList.add('hidden');
+        }
 
-        document.getElementById('inv-subtotal').textContent = `$${subtotal.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-        document.getElementById('inv-tax').textContent = `$${tax.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
-        document.getElementById('inv-total').textContent = `$${total.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+        const taxable = subtotal - discountAmount;
+        const tax = taxable * (inv.taxRate / 100);
+        const total = taxable + tax;
 
+        document.getElementById('inv-subtotal').textContent = `${sym}${subtotal.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        const taxLabel = inv.taxRate === 0 ? 'Tax (none)' : `Tax (${inv.taxRate}%)`;
+        document.getElementById('inv-tax-label').textContent = taxLabel;
+        document.getElementById('inv-tax').textContent = `${sym}${tax.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        document.getElementById('inv-total').textContent = `${sym}${total.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+
+        document.getElementById('inv-terms').textContent = inv.terms === 'Due on Receipt' ? 'Due on Receipt' : `${inv.terms} — Payment due within ${inv.termsDays} days of invoice date.`;
+        document.getElementById('inv-method').textContent = 'Accept: Bank transfer, PayPal, Stripe';
+        document.getElementById('inv-notes').textContent = inv.notes || '';
+
+        // Store calculated totals on invoice
+        inv._subtotal = subtotal;
+        inv._discount = discountAmount;
+        inv._tax = tax;
+        inv._total = total;
+
+        applyTemplateStyle();
+        document.getElementById('template-switcher').classList.remove('hidden');
         document.getElementById('invoice-output').classList.remove('hidden');
         document.getElementById('invoice-output').scrollIntoView({ behavior: 'smooth' });
     }
 
+    // ===== TEMPLATE STYLES =====
+    function setTemplate(tpl) {
+        currentTemplate = tpl;
+        document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        applyTemplateStyle();
+    }
+
+    function applyTemplateStyle() {
+        const preview = document.getElementById('invoice-preview');
+        const header = document.getElementById('inv-header-area');
+        preview.className = 'rounded-2xl overflow-hidden shadow-2xl';
+
+        if (currentTemplate === 'minimal') {
+            preview.classList.add('tpl-minimal');
+            setPreviewColors('#111', '#888', '#aaa', '#e5e7eb', '#059669', '#fff');
+        } else if (currentTemplate === 'blue') {
+            preview.style.background = 'linear-gradient(135deg, #f0f4ff 0%, #fff 100%)';
+            setPreviewColors('#1e293b', '#64748b', '#94a3b8', '#cbd5e1', '#2563eb', '#f0f4ff');
+        } else if (currentTemplate === 'bold') {
+            preview.style.background = '#1a1a2e';
+            setPreviewColors('#e2e8f0', '#94a3b8', '#64748b', '#334155', '#34d399', '#1a1a2e');
+        }
+    }
+
+    function setPreviewColors(text, muted, label, border, accent, bg) {
+        const area = document.getElementById('inv-header-area');
+        area.querySelectorAll('[style*="color:#111"]').forEach(e => e.style.color = text);
+        // Re-apply specific colors
+        document.getElementById('inv-title-text').style.color = text;
+        document.getElementById('inv-number-display').style.color = muted;
+        document.getElementById('inv-from-name').style.color = text;
+        document.getElementById('inv-from-email').style.color = muted;
+        document.getElementById('inv-from-address').style.color = muted;
+        document.getElementById('inv-client-name').style.color = text;
+        document.getElementById('inv-client-email').style.color = muted;
+        document.getElementById('inv-client-address').style.color = muted;
+        document.getElementById('inv-date').style.color = text;
+        document.getElementById('inv-due').style.color = accent;
+        document.getElementById('inv-currency-display').style.color = text;
+        document.getElementById('inv-subtotal').style.color = text;
+        document.getElementById('inv-tax').style.color = text;
+        document.getElementById('inv-total').style.color = accent;
+        document.getElementById('inv-terms').style.color = muted;
+        document.getElementById('inv-method').style.color = muted;
+        document.getElementById('inv-notes').style.color = muted;
+        document.getElementById('inv-tax-label').style.color = muted;
+        document.getElementById('inv-total-row').style.borderTopColor = text;
+        document.querySelectorAll('#inv-header-area [style*="color:#aaa"]').forEach(e => e.style.color = label);
+        // Table header
+        document.getElementById('inv-table-header').style.borderBottomColor = border;
+        // Item rows
+        document.querySelectorAll('#inv-items tr').forEach(tr => {
+            tr.style.borderBottomColor = border;
+            tr.querySelectorAll('td').forEach(td => td.style.color = text);
+        });
+    }
+
+    // ===== LINE ITEMS (Manual Builder) =====
+    function renderLineItems() {
+        const tbody = document.getElementById('line-items');
+        tbody.innerHTML = '';
+        lineItems.forEach((item, i) => {
+            const amount = (item.qty || 0) * (item.rate || 0);
+            const sym = CURRENCIES[document.getElementById('m-currency').value] || '$';
+            const tr = document.createElement('tr');
+            tr.className = 'inv-row border-b border-white/5';
+            tr.innerHTML = `
+                <td class="py-2"><input class="w-full bg-white/5 border border-white/10 rounded px-2 py-1.5 text-white text-sm focus:border-emerald-500 focus:outline-none" value="${escAttr(item.description)}" onchange="lineItems[${i}].description=this.value"></td>
+                <td class="py-2 px-1"><input type="number" min="0" step="0.01" class="w-full bg-white/5 border border-white/10 rounded px-2 py-1.5 text-white text-sm text-right focus:border-emerald-500 focus:outline-none" value="${item.qty}" onchange="lineItems[${i}].qty=parseFloat(this.value)||0;recalc()"></td>
+                <td class="py-2 px-1"><select class="bg-white/5 border border-white/10 rounded px-1 py-1.5 text-white text-xs focus:border-emerald-500 focus:outline-none" onchange="lineItems[${i}].unit=this.value">
+                    <option value="hrs" ${item.unit==='hrs'?'selected':''}>hrs</option>
+                    <option value="ea" ${item.unit==='ea'?'selected':''}>ea</option>
+                    <option value="days" ${item.unit==='days'?'selected':''}>days</option>
+                    <option value="words" ${item.unit==='words'?'selected':''}>words</option>
+                    <option value="pgs" ${item.unit==='pgs'?'selected':''}>pgs</option>
+                </select></td>
+                <td class="py-2 px-1"><input type="number" min="0" step="0.01" class="w-full bg-white/5 border border-white/10 rounded px-2 py-1.5 text-white text-sm text-right focus:border-emerald-500 focus:outline-none" value="${item.rate}" onchange="lineItems[${i}].rate=parseFloat(this.value)||0;recalc()"></td>
+                <td class="py-2 px-1 text-right text-sm text-gray-300 font-medium">${sym}${amount.toLocaleString('en-US',{minimumFractionDigits:2})}</td>
+                <td class="py-2 pl-1"><button onclick="removeLineItem(${i})" class="row-delete text-red-400 hover:text-red-300 text-sm">✕</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+        recalc();
+    }
+
+    function addLineItem() {
+        lineItems.push({ description: '', qty: 1, unit: 'hrs', rate: 0 });
+        renderLineItems();
+    }
+
+    function removeLineItem(i) {
+        if (lineItems.length <= 1) return;
+        lineItems.splice(i, 1);
+        renderLineItems();
+    }
+
+    function recalc() {
+        const sym = CURRENCIES[document.getElementById('m-currency').value] || '$';
+        let subtotal = 0;
+        lineItems.forEach(i => subtotal += (i.qty || 0) * (i.rate || 0));
+
+        const discount = parseFloat(document.getElementById('m-discount').value) || 0;
+        const discType = document.getElementById('m-discount-type').value;
+        const discAmt = discType === 'percent' ? subtotal * (discount / 100) : discount;
+
+        const taxRate = getEffectiveTaxRate();
+        const taxable = subtotal - discAmt;
+        const tax = taxable * (taxRate / 100);
+        const total = taxable + tax;
+
+        document.getElementById('calc-subtotal').textContent = `${sym}${subtotal.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        if (discAmt > 0) {
+            document.getElementById('calc-discount-row').classList.remove('hidden');
+            document.getElementById('calc-discount').textContent = `-${sym}${discAmt.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        } else {
+            document.getElementById('calc-discount-row').classList.add('hidden');
+        }
+        document.getElementById('calc-tax-label').textContent = taxRate === 0 ? 'Tax (none)' : `Tax (${taxRate}%)`;
+        document.getElementById('calc-tax').textContent = `${sym}${tax.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        document.getElementById('calc-total').textContent = `${sym}${total.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+
+        // Update line item amounts display
+        document.querySelectorAll('#line-items tr').forEach((tr, i) => {
+            const amt = (lineItems[i].qty || 0) * (lineItems[i].rate || 0);
+            const amtCell = tr.querySelectorAll('td')[4];
+            if (amtCell) amtCell.textContent = `${sym}${amt.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        });
+    }
+
+    function getEffectiveTaxRate() {
+        const sel = document.getElementById('m-tax-rate').value;
+        if (sel === 'custom') return parseFloat(document.getElementById('m-custom-tax').value) || 0;
+        return parseFloat(sel) || 0;
+    }
+
+    function handleTaxChange() {
+        const sel = document.getElementById('m-tax-rate').value;
+        document.getElementById('custom-tax-wrap').classList.toggle('hidden', sel !== 'custom');
+        recalc();
+    }
+
+    // ===== INVOICE NUMBER =====
+    function nextInvoiceNumber() {
+        const invoices = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        let maxNum = 1000;
+        invoices.forEach(inv => {
+            const m = inv.number.match(/(\d+)/);
+            if (m) maxNum = Math.max(maxNum, parseInt(m[1]));
+        });
+        return `INV-${maxNum + 1}`;
+    }
+
+    // ===== SAVE INVOICE =====
+    function saveInvoice() {
+        if (!currentInvoice) { alert('Generate an invoice first!'); return; }
+        const invoices = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        const existing = invoices.findIndex(i => i.id === currentInvoice.id);
+        if (existing >= 0) invoices[existing] = currentInvoice;
+        else invoices.push(currentInvoice);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(invoices));
+        renderHistory();
+        alert('Invoice saved! ✓');
+    }
+
+    // ===== EDIT CURRENT INVOICE =====
+    function editCurrentInvoice() {
+        if (!currentInvoice) return;
+        const inv = currentInvoice;
+
+        // Switch to manual tab and populate
+        showBuilderTab('manual');
+        document.getElementById('m-from-name').value = inv.fromName;
+        document.getElementById('m-from-email').value = inv.fromEmail;
+        document.getElementById('m-from-address').value = inv.fromAddress || '';
+        document.getElementById('m-client-name').value = inv.clientName;
+        document.getElementById('m-client-email').value = inv.clientEmail;
+        document.getElementById('m-client-address').value = inv.clientAddress || '';
+        document.getElementById('m-inv-number').value = inv.number;
+        document.getElementById('m-inv-date').value = inv.date;
+        document.getElementById('m-terms').value = String(inv.termsDays);
+        document.getElementById('m-currency').value = inv.currency;
+        document.getElementById('m-discount').value = inv.discount;
+        document.getElementById('m-discount-type').value = inv.discountType;
+        document.getElementById('m-notes').value = inv.notes || '';
+
+        // Tax rate
+        const taxSel = document.getElementById('m-tax-rate');
+        const taxOpts = Array.from(taxSel.options).map(o => o.value);
+        if (taxOpts.includes(String(inv.taxRate))) {
+            taxSel.value = String(inv.taxRate);
+        } else {
+            taxSel.value = 'custom';
+            document.getElementById('custom-tax-wrap').classList.remove('hidden');
+            document.getElementById('m-custom-tax').value = inv.taxRate;
+        }
+
+        lineItems = inv.items.map(i => ({...i}));
+        renderLineItems();
+
+        document.getElementById('invoice-output').classList.add('hidden');
+        document.getElementById('template-switcher').classList.add('hidden');
+        document.getElementById('panel-manual').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ===== HISTORY =====
+    function renderHistory() {
+        const invoices = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        const list = document.getElementById('history-list');
+
+        // Stats
+        let totalPaid = 0, totalOutstanding = 0, totalOverdue = 0;
+        const now = new Date();
+        invoices.forEach(inv => {
+            const total = inv._total || calcTotal(inv);
+            if (inv.status === 'paid') totalPaid += total;
+            else {
+                totalOutstanding += total;
+                if (new Date(inv.dueDate) < now && inv.status !== 'paid') totalOverdue += total;
+            }
+        });
+
+        document.getElementById('hist-total').textContent = invoices.length;
+        document.getElementById('hist-outstanding').textContent = '$' + totalOutstanding.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        document.getElementById('hist-overdue').textContent = '$' + totalOverdue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+        document.getElementById('hist-paid').textContent = '$' + totalPaid.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+
+        if (invoices.length === 0) {
+            list.innerHTML = '<div class="glass rounded-xl p-6 text-center text-gray-500"><p>No invoices yet. Create your first invoice above! 👆</p></div>';
+            return;
+        }
+
+        list.innerHTML = invoices.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(inv => {
+            const total = inv._total || calcTotal(inv);
+            const sym = CURRENCIES[inv.currency] || '$';
+            const isOverdue = new Date(inv.dueDate) < now && inv.status !== 'paid';
+            const status = inv.status === 'paid' ? 'paid' : isOverdue ? 'overdue' : inv.status;
+            const statusColors = { draft: 'bg-gray-500/10 text-gray-400', sent: 'bg-blue-500/10 text-blue-400', paid: 'bg-emerald-500/10 text-emerald-400', overdue: 'bg-red-500/10 text-red-400' };
+
+            return `<div class="glass rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex-1">
+                    <div class="flex items-center gap-3">
+                        <span class="font-medium text-white">#${escHtml(inv.number)}</span>
+                        <span class="status-badge ${statusColors[status] || statusColors.draft}">${status.toUpperCase()}</span>
+                    </div>
+                    <div class="text-sm text-gray-400 mt-1">${escHtml(inv.clientName)} · ${formatDate(inv.date)} · Due ${formatDate(inv.dueDate)}</div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-lg font-bold text-white">${sym}${total.toLocaleString('en-US',{minimumFractionDigits:2})}</span>
+                    <div class="flex gap-1">
+                        <button onclick="loadInvoice('${inv.id}')" class="text-xs bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg px-2 py-1 transition" title="View">👁️</button>
+                        <button onclick="duplicateInvoice('${inv.id}')" class="text-xs bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg px-2 py-1 transition" title="Duplicate">📋</button>
+                        <button onclick="cycleStatus('${inv.id}')" class="text-xs bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg px-2 py-1 transition" title="Change status">🔄</button>
+                        <button onclick="deleteInvoice('${inv.id}')" class="text-xs bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 rounded-lg px-2 py-1 transition" title="Delete">🗑️</button>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function calcTotal(inv) {
+        let sub = 0;
+        (inv.items || []).forEach(i => sub += (i.qty || 0) * (i.rate || 0));
+        const disc = inv.discountType === 'percent' ? sub * ((inv.discount || 0) / 100) : (inv.discount || 0);
+        const taxable = sub - disc;
+        return taxable + taxable * ((inv.taxRate || 0) / 100);
+    }
+
+    function loadInvoice(id) {
+        const invoices = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        const inv = invoices.find(i => i.id === id);
+        if (!inv) return;
+        currentInvoice = inv;
+        renderInvoicePreview();
+    }
+
+    function duplicateInvoice(id) {
+        const invoices = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        const inv = invoices.find(i => i.id === id);
+        if (!inv) return;
+        const dup = JSON.parse(JSON.stringify(inv));
+        dup.id = crypto.randomUUID ? crypto.randomUUID() : 'inv-' + Date.now();
+        dup.number = nextInvoiceNumber();
+        dup.status = 'draft';
+        dup.date = new Date().toISOString().split('T')[0];
+        const due = new Date();
+        due.setDate(due.getDate() + (dup.termsDays || 30));
+        dup.dueDate = due.toISOString().split('T')[0];
+        dup.createdAt = new Date().toISOString();
+        invoices.push(dup);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(invoices));
+        renderHistory();
+    }
+
+    function cycleStatus(id) {
+        const invoices = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        const inv = invoices.find(i => i.id === id);
+        if (!inv) return;
+        const cycle = ['draft', 'sent', 'paid'];
+        const idx = cycle.indexOf(inv.status);
+        inv.status = cycle[(idx + 1) % cycle.length];
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(invoices));
+        renderHistory();
+    }
+
+    function deleteInvoice(id) {
+        if (!confirm('Delete this invoice?')) return;
+        let invoices = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        invoices = invoices.filter(i => i.id !== id);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(invoices));
+        renderHistory();
+    }
+
+    // ===== CHASE EMAIL GENERATOR =====
+    function generateChaseEmails() {
+        const client = document.getElementById('chase-client').value || 'Client';
+        const biz = document.getElementById('chase-biz').value || 'Your Business';
+        const invNum = document.getElementById('chase-inv-num').value || 'INV-001';
+        const amount = document.getElementById('chase-amount').value || '$0';
+        const days = parseInt(document.getElementById('chase-days').value) || 7;
+
+        const firstName = client.split(' ')[0];
+
+        window._chaseEmails = [
+            {
+                subject: `Quick follow-up: ${invNum} — payment reminder`,
+                body: `Hi ${firstName},\n\nHope you're doing well! Just a quick follow-up on ${invNum} for ${amount}, which was due ${days} day${days===1?'':'s'} ago.\n\nI know things can get busy — just wanted to make sure it didn't slip through the cracks. If you've already sent the payment, please disregard this note!\n\nIf you have any questions about the invoice, happy to chat.\n\nBest,\n${biz}`
+            },
+            {
+                subject: `Payment reminder: ${invNum} — ${days} days overdue`,
+                body: `Hi ${firstName},\n\nThis is a reminder that ${invNum} for ${amount} is now ${days} days past due.\n\nOutstanding balance:\n• Invoice: ${invNum}\n• Amount: ${amount}\n• Days Overdue: ${days}\n\nCould you please confirm when we can expect payment? If there are any issues with the invoice or you need to discuss payment arrangements, I'm happy to work something out.\n\nI've reattached the original invoice for your reference.\n\nThank you,\n${biz}`
+            },
+            {
+                subject: `FINAL NOTICE: ${invNum} — ${days} days overdue, action required`,
+                body: `Dear ${firstName},\n\nThis is the final notice regarding ${invNum} for ${amount}, which is now ${days} days past due.\n\nDespite previous reminders, payment has not been received.\n\nOutstanding balance:\n• Invoice: ${invNum}\n• Amount: ${amount}\n• Days Overdue: ${days}\n\nPlease remit payment within 7 business days to avoid further action, which may include:\n• Suspension of ongoing work\n• Referral to a collections service\n• Late fee assessment\n\nIf there are circumstances preventing payment, please contact me immediately to discuss a payment plan. I'd much prefer to resolve this directly.\n\nRegards,\n${biz}`
+            }
+        ];
+
+        // Re-render the cards
+        document.getElementById('chase-output').innerHTML = `<div class="grid md:grid-cols-3 gap-4">
+            <div class="glass rounded-2xl p-6 cursor-pointer hover:bg-white/5 transition" onclick="showChaseLevel(0)">
+                <div class="flex items-center gap-2 mb-3"><span class="text-2xl">😊</span><div><div class="font-semibold text-emerald-400">Friendly Nudge</div><div class="text-xs text-gray-500">Level 1</div></div></div>
+                <p class="text-sm text-gray-400">"${window._chaseEmails[0].body.substring(0, 60)}..."</p>
+            </div>
+            <div class="glass rounded-2xl p-6 cursor-pointer hover:bg-white/5 transition" onclick="showChaseLevel(1)">
+                <div class="flex items-center gap-2 mb-3"><span class="text-2xl">📋</span><div><div class="font-semibold text-yellow-400">Professional Reminder</div><div class="text-xs text-gray-500">Level 2</div></div></div>
+                <p class="text-sm text-gray-400">"${window._chaseEmails[1].body.substring(0, 60)}..."</p>
+            </div>
+            <div class="glass rounded-2xl p-6 cursor-pointer hover:bg-white/5 transition" onclick="showChaseLevel(2)">
+                <div class="flex items-center gap-2 mb-3"><span class="text-2xl">⚠️</span><div><div class="font-semibold text-red-400">Final Notice</div><div class="text-xs text-gray-500">Level 3</div></div></div>
+                <p class="text-sm text-gray-400">"${window._chaseEmails[2].body.substring(0, 60)}..."</p>
+            </div>
+        </div>`;
+    }
+
+    // Default chase emails
+    window._chaseEmails = [
+        { subject: 'Quick follow-up: INV-1042 — payment reminder', body: 'Hi Sarah,\n\nHope you\'re doing well! Just a quick follow-up on INV-1042 for $3,500, which was due 14 days ago.\n\nI know things can get busy — just wanted to make sure it didn\'t slip through the cracks. If you\'ve already sent the payment, please disregard this note!\n\nBest,\nYour Business' },
+        { subject: 'Payment reminder: INV-1042 — 14 days overdue', body: 'Hi Sarah,\n\nThis is a reminder that INV-1042 for $3,500 is now 14 days past due.\n\nOutstanding balance:\n• Invoice: INV-1042\n• Amount: $3,500\n• Days Overdue: 14\n\nCould you please confirm when we can expect payment?\n\nThank you,\nYour Business' },
+        { subject: 'FINAL NOTICE: INV-1042 — 14 days overdue, action required', body: 'Dear Sarah,\n\nThis is the final notice regarding INV-1042 for $3,500, which is now 14 days past due.\n\nPlease remit payment within 7 business days to avoid further action.\n\nRegards,\nYour Business' }
+    ];
+
+    function showChaseLevel(level) {
+        document.getElementById('chase-subject').textContent = window._chaseEmails[level].subject;
+        document.getElementById('chase-body').textContent = window._chaseEmails[level].body;
+        document.getElementById('chase-preview').classList.remove('hidden');
+        document.getElementById('chase-preview').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function copyChaseEmail() {
+        const s = document.getElementById('chase-subject').textContent;
+        const b = document.getElementById('chase-body').textContent;
+        navigator.clipboard.writeText(`Subject: ${s}\n\n${b}`);
+        alert('Email copied! ✓');
+    }
+
+    // ===== PDF EXPORT =====
     function downloadPDF() {
+        if (!currentInvoice) { alert('Generate an invoice first!'); return; }
+        const inv = currentInvoice;
+        const sym = CURRENCIES[inv.currency] || '$';
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        const invNum = document.getElementById('inv-number').textContent;
-        const client = document.getElementById('inv-client').textContent;
-        const date = document.getElementById('inv-date').textContent;
-        const due = document.getElementById('inv-due').textContent;
-        const terms = document.getElementById('inv-terms').textContent;
+
+        // Colors based on template
+        let accent = [5, 150, 105]; // emerald
+        let textDark = [17, 17, 17];
+        let textMuted = [128, 128, 128];
+        if (currentTemplate === 'blue') { accent = [37, 99, 235]; textDark = [30, 41, 59]; }
+        else if (currentTemplate === 'bold') { accent = [52, 211, 153]; textDark = [30, 30, 30]; }
 
         // Header
         doc.setFontSize(28);
         doc.setFont('helvetica', 'bold');
+        doc.setTextColor(...textDark);
         doc.text('INVOICE', 20, 30);
         doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
-        doc.setTextColor(128);
-        doc.text(invNum, 20, 38);
+        doc.setTextColor(...textMuted);
+        doc.text('#' + inv.number, 20, 38);
 
         // From
-        doc.setTextColor(0);
+        doc.setTextColor(...textDark);
         doc.setFontSize(11);
         doc.setFont('helvetica', 'bold');
-        doc.text('Your Business Name', 190, 25, { align: 'right' });
+        doc.text(inv.fromName, 190, 25, { align: 'right' });
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(9);
-        doc.setTextColor(128);
-        doc.text('you@email.com', 190, 32, { align: 'right' });
+        doc.setTextColor(...textMuted);
+        doc.text(inv.fromEmail, 190, 32, { align: 'right' });
+        if (inv.fromAddress) doc.text(inv.fromAddress, 190, 38, { align: 'right' });
 
         // Bill To
-        doc.setTextColor(128);
+        let y = 55;
+        doc.setTextColor(...textMuted);
         doc.setFontSize(8);
-        doc.text('BILL TO', 20, 55);
-        doc.setTextColor(0);
+        doc.text('BILL TO', 20, y);
+        doc.setTextColor(...textDark);
         doc.setFontSize(11);
         doc.setFont('helvetica', 'bold');
-        doc.text(client, 20, 62);
+        doc.text(inv.clientName, 20, y + 7);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setTextColor(...textMuted);
+        if (inv.clientEmail) doc.text(inv.clientEmail, 20, y + 14);
+        if (inv.clientAddress) doc.text(inv.clientAddress, 20, y + 20);
 
         // Dates
-        doc.setTextColor(128);
+        doc.setTextColor(...textMuted);
         doc.setFontSize(8);
-        doc.setFont('helvetica', 'normal');
-        doc.text('DATE', 150, 55);
-        doc.setTextColor(0);
+        doc.text('DATE', 140, y);
+        doc.setTextColor(...textDark);
         doc.setFontSize(10);
-        doc.text(date, 150, 62);
-        doc.setTextColor(128);
+        doc.text(formatDate(inv.date), 140, y + 7);
+        doc.setTextColor(...textMuted);
         doc.setFontSize(8);
-        doc.text('DUE DATE', 150, 70);
-        doc.setTextColor(0, 128, 0);
+        doc.text('DUE DATE', 140, y + 14);
+        doc.setTextColor(...accent);
         doc.setFontSize(10);
-        doc.text(due, 150, 77);
+        doc.text(formatDate(inv.dueDate), 140, y + 21);
+        doc.setTextColor(...textMuted);
+        doc.setFontSize(8);
+        doc.text('CURRENCY', 140, y + 28);
+        doc.setTextColor(...textDark);
+        doc.setFontSize(10);
+        doc.text(inv.currency, 140, y + 35);
 
-        // Table header
-        doc.setTextColor(128);
+        // Table
+        y = 100;
+        doc.setTextColor(...textMuted);
         doc.setFontSize(8);
-        let y = 95;
         doc.text('DESCRIPTION', 20, y);
         doc.text('QTY', 110, y);
         doc.text('RATE', 140, y);
-        doc.text('AMOUNT', 170, y);
+        doc.text('AMOUNT', 175, y, { align: 'right' });
         doc.setDrawColor(200);
         doc.line(20, y + 3, 190, y + 3);
 
-        // Line items
-        const rows = document.getElementById('inv-items').querySelectorAll('tr');
-        doc.setTextColor(0);
-        doc.setFontSize(10);
         y += 12;
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            doc.text(cells[0].textContent, 20, y);
-            doc.text(cells[1].textContent, 110, y);
-            doc.text(cells[2].textContent, 140, y);
-            doc.setFont('helvetica', 'bold');
-            doc.text(cells[3].textContent, 190, y, { align: 'right' });
+        doc.setTextColor(...textDark);
+        doc.setFontSize(10);
+        let subtotal = 0;
+        inv.items.forEach(item => {
+            const amt = item.qty * item.rate;
+            subtotal += amt;
             doc.setFont('helvetica', 'normal');
+            doc.text(item.description.substring(0, 45), 20, y);
+            doc.text(`${item.qty} ${item.unit}`, 110, y);
+            doc.text(`${sym}${item.rate.toLocaleString('en-US',{minimumFractionDigits:2})}`, 140, y);
+            doc.setFont('helvetica', 'bold');
+            doc.text(`${sym}${amt.toLocaleString('en-US',{minimumFractionDigits:2})}`, 190, y, { align: 'right' });
             y += 10;
         });
 
@@ -863,207 +1420,104 @@
         y += 5;
         doc.setDrawColor(200);
         doc.line(130, y, 190, y);
-        y += 10;
-        doc.setTextColor(128);
-        doc.text('Subtotal', 130, y);
-        doc.setTextColor(0);
-        doc.text(document.getElementById('inv-subtotal').textContent, 190, y, { align: 'right' });
         y += 8;
-        doc.setTextColor(128);
-        doc.text('Tax (13% HST)', 130, y);
-        doc.setTextColor(0);
-        doc.text(document.getElementById('inv-tax').textContent, 190, y, { align: 'right' });
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...textMuted);
+        doc.text('Subtotal', 130, y);
+        doc.setTextColor(...textDark);
+        doc.text(`${sym}${subtotal.toLocaleString('en-US',{minimumFractionDigits:2})}`, 190, y, { align: 'right' });
+
+        if (inv.discount > 0) {
+            y += 8;
+            const discAmt = inv.discountType === 'percent' ? subtotal * (inv.discount / 100) : inv.discount;
+            doc.setTextColor(...textMuted);
+            doc.text(`Discount${inv.discountType === 'percent' ? ` (${inv.discount}%)` : ''}`, 130, y);
+            doc.setTextColor(220, 38, 38);
+            doc.text(`-${sym}${discAmt.toLocaleString('en-US',{minimumFractionDigits:2})}`, 190, y, { align: 'right' });
+        }
+
+        y += 8;
+        doc.setTextColor(...textMuted);
+        doc.text(inv.taxRate === 0 ? 'Tax (none)' : `Tax (${inv.taxRate}%)`, 130, y);
+        doc.setTextColor(...textDark);
+        const tax = inv._tax || 0;
+        doc.text(`${sym}${tax.toLocaleString('en-US',{minimumFractionDigits:2})}`, 190, y, { align: 'right' });
+
         y += 5;
-        doc.setDrawColor(0);
+        doc.setDrawColor(...textDark);
         doc.setLineWidth(0.5);
         doc.line(130, y, 190, y);
         y += 8;
         doc.setFontSize(14);
         doc.setFont('helvetica', 'bold');
         doc.text('Total', 130, y);
-        doc.setTextColor(0, 128, 0);
-        doc.text(document.getElementById('inv-total').textContent, 190, y, { align: 'right' });
+        doc.setTextColor(...accent);
+        const total = inv._total || 0;
+        doc.text(`${sym}${total.toLocaleString('en-US',{minimumFractionDigits:2})}`, 190, y, { align: 'right' });
 
         // Payment terms
         y += 20;
-        doc.setTextColor(128);
+        doc.setTextColor(...textMuted);
         doc.setFontSize(8);
         doc.setFont('helvetica', 'normal');
         doc.text('PAYMENT TERMS', 20, y);
-        doc.setTextColor(80);
+        doc.setTextColor(80, 80, 80);
         doc.setFontSize(9);
-        doc.text(terms, 20, y + 7);
+        doc.text(inv.terms === 'Due on Receipt' ? 'Due on Receipt' : `${inv.terms} — Payment due within ${inv.termsDays} days`, 20, y + 7);
         doc.text('Accept: Bank transfer, PayPal, Stripe', 20, y + 14);
+        if (inv.notes) doc.text(inv.notes, 20, y + 21);
 
         // Footer
-        doc.setTextColor(180);
+        doc.setTextColor(180, 180, 180);
         doc.setFontSize(8);
         doc.text('Generated by InvoicePilot — invoicepilot.ai', 105, 285, { align: 'center' });
 
-        doc.save(`Invoice-${invNum}-${client.replace(/\s+/g, '_')}.pdf`);
+        doc.save(`Invoice-${inv.number}-${inv.clientName.replace(/\s+/g, '_')}.pdf`);
     }
 
-    function copyInvoice() {
-        const el = document.getElementById('invoice-preview');
-        const text = el.innerText;
+    // ===== COPY TEXT =====
+    function copyInvoiceText() {
+        if (!currentInvoice) return;
+        const inv = currentInvoice;
+        const sym = CURRENCIES[inv.currency] || '$';
+        let text = `INVOICE #${inv.number}\n\nFrom: ${inv.fromName} (${inv.fromEmail})\nTo: ${inv.clientName} (${inv.clientEmail})\nDate: ${formatDate(inv.date)}\nDue: ${formatDate(inv.dueDate)}\nCurrency: ${inv.currency}\n\n--- LINE ITEMS ---\n`;
+        inv.items.forEach(i => {
+            text += `${i.description} — ${i.qty} ${i.unit} × ${sym}${i.rate.toFixed(2)} = ${sym}${(i.qty*i.rate).toFixed(2)}\n`;
+        });
+        text += `\nSubtotal: ${sym}${(inv._subtotal||0).toFixed(2)}`;
+        if (inv._discount > 0) text += `\nDiscount: -${sym}${inv._discount.toFixed(2)}`;
+        text += `\nTax (${inv.taxRate}%): ${sym}${(inv._tax||0).toFixed(2)}`;
+        text += `\nTOTAL: ${sym}${(inv._total||0).toFixed(2)}`;
+        text += `\n\nPayment Terms: ${inv.terms}`;
+        if (inv.notes) text += `\nNotes: ${inv.notes}`;
         navigator.clipboard.writeText(text);
-        alert('Invoice copied to clipboard!');
+        alert('Invoice text copied! ✓');
     }
 
-    // Chase emails
-    const chaseEmails = [
-        {
-            subject: "Quick follow-up: Invoice #1042 — payment reminder",
-            body: `Hi Sarah,
-
-Hope you're doing well! Just a quick follow-up on Invoice #1042 for $3,500, which was due on March 8th.
-
-I know things can get busy — just wanted to make sure it didn't slip through the cracks. If you've already sent the payment, please disregard this note!
-
-If you have any questions about the invoice, happy to chat.
-
-Best,
-[Your Name]`
-        },
-        {
-            subject: "Payment reminder: Invoice #1042 — 14 days overdue",
-            body: `Hi Sarah,
-
-This is a reminder that Invoice #1042 for $3,500.00 is now 14 days past the due date of March 8, 2026.
-
-Original invoice details:
-• Invoice #1042
-• Amount: $3,500.00
-• Due Date: March 8, 2026
-• Days Overdue: 14
-
-Could you please confirm when we can expect payment? If there are any issues with the invoice or you need to discuss payment arrangements, I'm happy to work something out.
-
-I've reattached the original invoice for your reference.
-
-Thank you,
-[Your Name]`
-        },
-        {
-            subject: "FINAL NOTICE: Invoice #1042 — 30 days overdue, action required",
-            body: `Dear Sarah,
-
-This is the final notice regarding Invoice #1042 for $3,500.00, which is now 30 days past due.
-
-Despite previous reminders sent on March 11 and March 22, payment has not been received.
-
-Outstanding balance:
-• Invoice #1042: $3,500.00
-• Original Due Date: March 8, 2026
-• Days Overdue: 30
-• Late Fee (if applicable): $52.50
-
-Please remit payment within 7 business days to avoid further action, which may include:
-• Suspension of ongoing work
-• Referral to a collections service
-• Reporting to credit agencies
-
-If there are circumstances preventing payment, please contact me immediately to discuss a payment plan. I'd much prefer to resolve this directly.
-
-Payment can be made via bank transfer, PayPal, or Stripe using the details on the original invoice.
-
-Regards,
-[Your Name]`
-        }
-    ];
-
-    function showChase(level) {
-        document.getElementById('chase-subject').textContent = chaseEmails[level].subject;
-        document.getElementById('chase-body').textContent = chaseEmails[level].body;
-        document.getElementById('chase-preview').classList.remove('hidden');
-        document.getElementById('chase-preview').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // ===== UTILITIES =====
+    function formatDate(d) {
+        if (!d) return '';
+        const date = new Date(d + 'T00:00:00');
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     }
+    function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function escAttr(s) { return (s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
-    function copyChase() {
-        const subject = document.getElementById('chase-subject').textContent;
-        const body = document.getElementById('chase-body').textContent;
-        navigator.clipboard.writeText(`Subject: ${subject}\n\n${body}`);
-        alert('Email copied to clipboard!');
-    }
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+        // Set today's date
+        document.getElementById('m-inv-date').value = new Date().toISOString().split('T')[0];
+        document.getElementById('m-inv-number').value = nextInvoiceNumber();
 
-    // Waitlist
-    function submitWaitlist() {
-        const email = document.getElementById('wl-email').value.trim();
-        if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
+        // Load saved settings
+        const settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
+        if (settings.fromName) document.getElementById('m-from-name').value = settings.fromName;
+        if (settings.fromEmail) document.getElementById('m-from-email').value = settings.fromEmail;
+        if (settings.fromAddress) document.getElementById('m-from-address').value = settings.fromAddress;
 
-        const entry = {
-            email,
-            role: document.getElementById('wl-role').value,
-            invoices: document.getElementById('wl-invoices').value,
-            timestamp: new Date().toISOString(),
-            product: 'invoicepilot'
-        };
-
-        const existing = JSON.parse(localStorage.getItem('invoicepilot_waitlist') || '[]');
-        existing.push(entry);
-        localStorage.setItem('invoicepilot_waitlist', JSON.stringify(existing));
-
-        document.getElementById('waitlist-form').classList.add('hidden');
-        document.getElementById('waitlist-success').classList.remove('hidden');
-        document.getElementById('waitlist-position').textContent = `You're #${existing.length + 287} on the waitlist`;
-    }
+        renderHistory();
+        renderLineItems();
+    });
     </script>
-
-  <!-- Analytics (GoatCounter — privacy-friendly, no cookies) -->
-  <script data-goatcounter="https://opensphere-labs.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-
-  <!-- Real Email Capture (Formsubmit.co — free, no backend) -->
-  <script>
-    // Intercept all waitlist form submissions and forward to Formsubmit.co
-    (function() {
-      const FORMSUBMIT_URL = 'https://formsubmit.co/ajax/atalashutosh@gmail.com';
-      const PRODUCT = 'invoicepilot';
-      
-      // Override any existing form submission to also send via Formsubmit
-      const origSubmit = window.submitWaitlist || window.handleWaitlist || window.joinWaitlist;
-      
-      function captureEmail(email) {
-        if (!email || !email.includes('@')) return;
-        
-        // Send to Formsubmit.co via AJAX (no redirect)
-        fetch(FORMSUBMIT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            email: email,
-            product: PRODUCT,
-            source: 'waitlist',
-            timestamp: new Date().toISOString(),
-            _subject: PRODUCT + ' Waitlist Signup: ' + email,
-            _template: 'table'
-          })
-        }).catch(function() {});
-      }
-      
-      // Watch for form submissions on any email input
-      document.addEventListener('submit', function(e) {
-        const form = e.target;
-        const emailInput = form.querySelector('input[type="email"]');
-        if (emailInput && emailInput.value) {
-          captureEmail(emailInput.value);
-        }
-      });
-      
-      // Also intercept programmatic submissions
-      document.addEventListener('click', function(e) {
-        const btn = e.target;
-        if (btn.textContent && btn.textContent.includes('Waitlist')) {
-          setTimeout(function() {
-            const inputs = document.querySelectorAll('input[type="email"]');
-            inputs.forEach(function(input) {
-              if (input.value && input.value.includes('@')) {
-                captureEmail(input.value);
-              }
-            });
-          }, 100);
-        }
-      });
-    })();
-  </script>
 </body>
 </html>
